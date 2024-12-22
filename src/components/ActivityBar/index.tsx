@@ -1,4 +1,4 @@
-import { FiFile, FiSearch, FiGitBranch, FiSettings } from 'react-icons/fi'
+import { FiFile, FiSearch, FiGitBranch, FiSettings } from 'react-icons/fi';
 
 const ActivityBar = () => {
   return (
@@ -17,7 +17,7 @@ const ActivityBar = () => {
         <FiSettings size={24} />
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default ActivityBar 
+export default ActivityBar; 

@@ -1,4 +1,5 @@
 import VSCodeLayout from './layouts/VSCodeLayout'
+import './styles/editor.css'
 
 function App() {
   return (

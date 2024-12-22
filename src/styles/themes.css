@@ -1,0 +1,59 @@
+/* VS Code Dark (default) */
+.theme-vs-dark {
+  --editor-background: #1e1e1e;
+  --editor-foreground: #d4d4d4;
+  --editor-line-number: #858585;
+  --editor-active-line-number: #c6c6c6;
+  --editor-active-line-background: #282828;
+  --editor-selection-background: #264f78;
+  --editor-comment: #6a9955;
+  --editor-string: #ce9178;
+  --editor-keyword: #569cd6;
+  --editor-function: #dcdcaa;
+  --editor-class: #4ec9b0;
+}
+
+/* GitHub Dark */
+.theme-github-dark {
+  --editor-background: #0d1117;
+  --editor-foreground: #c9d1d9;
+  --editor-line-number: #6e7681;
+  --editor-active-line-number: #c9d1d9;
+  --editor-active-line-background: #171b22;
+  --editor-selection-background: #264f78;
+  --editor-comment: #8b949e;
+  --editor-string: #a5d6ff;
+  --editor-keyword: #ff7b72;
+  --editor-function: #d2a8ff;
+  --editor-class: #7ee787;
+}
+
+/* Dracula */
+.theme-dracula {
+  --editor-background: #282a36;
+  --editor-foreground: #f8f8f2;
+  --editor-line-number: #6272a4;
+  --editor-active-line-number: #f8f8f2;
+  --editor-active-line-background: #44475a;
+  --editor-selection-background: #44475a;
+  --editor-comment: #6272a4;
+  --editor-string: #f1fa8c;
+  --editor-keyword: #ff79c6;
+  --editor-function: #50fa7b;
+  --editor-class: #8be9fd;
+}
+
+/* Nord */
+.theme-nord {
+  --editor-background: #2e3440;
+  --editor-foreground: #d8dee9;
+  --editor-line-number: #4c566a;
+  --editor-active-line-number: #e5e9f0;
+  --editor-active-line-background: #3b4252;
+  --editor-selection-background: #434c5e;
+  --editor-comment: #616e88;
+  --editor-string: #a3be8c;
+  --editor-keyword: #81a1c1;
+  --editor-function: #88c0d0;
+  --editor-class: #8fbcbb;
+} 
