@@ -135,9 +135,10 @@ import 'prismjs/components/prism-python';
 interface CodeEditorProps {
   code: string;
   language: string;
+  onCursorPositionChange?: (position: { line: number; column: number }) => void;
 }
 
-const CodeEditor = ({ code, language }: CodeEditorProps) => {
+const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps) => {
   const codeRef = useRef<HTMLElement>(null);
   const [activeLine, setActiveLine] = useState(1);
   const lines = code.split('\n');
@@ -165,8 +166,25 @@ const CodeEditor = ({ code, language }: CodeEditorProps) => {
     }
   }, [code, language]);
 
+  // Ajout de la gestion du clic pour la position du curseur
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (onCursorPositionChange) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const relativeY = e.clientY - rect.top;
+      const lineHeight = 24; // hauteur de ligne en pixels
+      const line = Math.floor(relativeY / lineHeight) + 1;
+      
+      // Calcul approximatif de la colonne basé sur la position X
+      const relativeX = e.clientX - rect.left;
+      const charWidth = 8; // largeur moyenne d'un caractère en pixels
+      const column = Math.floor(relativeX / charWidth) + 1;
+      
+      onCursorPositionChange({ line, column });
+    }
+  };
+
   return (
-    <div className="relative flex h-full bg-[#1e1e1e]">
+    <div className="relative flex h-full">
       {/* Numéros de ligne */}
       <div className="select-none pr-4 text-right text-[#858585] min-w-[3rem]">
         {lines.map((_, index) => (
@@ -183,7 +201,6 @@ const CodeEditor = ({ code, language }: CodeEditorProps) => {
 
       {/* Code avec highlight */}
       <div className="relative flex-1 overflow-auto">
-        {/* Ligne active highlight */}
         <div 
           className="absolute w-full h-6 bg-[#282828] -z-10"
           style={{ top: `${(activeLine - 1) * 24}px` }}
@@ -193,6 +210,7 @@ const CodeEditor = ({ code, language }: CodeEditorProps) => {
           <code
             ref={codeRef}
             className={`language-${getNormalizedLanguage(language)}`}
+            onClick={handleClick}
             onMouseMove={(e) => {
               const lineHeight = 24;
               const rect = e.currentTarget.getBoundingClientRect();

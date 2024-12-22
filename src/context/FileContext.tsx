@@ -90,6 +90,43 @@ if __name__ == "__main__":
     print(result)`
     },
     language: 'python'
+  },
+  {
+    id: '5',
+    name: 'Counter.tsx',
+    content: {
+      fr: `// Exemple de compteur interactif
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <h2>Compteur: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>
+        Incrémenter
+      </button>
+    </div>
+  );
+}`,
+      en: `// Interactive counter example
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <h2>Counter: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}`
+    },
+    language: 'tsx'
   }
 ];
 
