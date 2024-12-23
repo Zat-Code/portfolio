@@ -11,19 +11,39 @@ interface EditorBlockProps {
 }
 
 const EditorBlock = ({ type, content, language, onCursorPositionChange }: EditorBlockProps) => {
+  // Fonction pour normaliser le langage
+  const getNormalizedLanguage = (lang?: string) => {
+    if (!lang) return 'typescript';
+    
+    // Map des extensions vers les langages Prism
+    const languageMap: { [key: string]: string } = {
+      'tsx': 'tsx',
+      'jsx': 'jsx',
+      'ts': 'typescript',
+      'js': 'javascript',
+      'json': 'json'
+    };
+
+    return languageMap[lang.toLowerCase()] || lang;
+  };
+
   if (type === 'code') {
     return (
-      <CodeEditor 
-        code={content as string}
-        language={language || 'text'}
-        onCursorPositionChange={onCursorPositionChange}
-      />
+      <div className="h-full overflow-x-auto">
+        <CodeEditor 
+          code={content as string}
+          language={getNormalizedLanguage(language)}
+          onCursorPositionChange={onCursorPositionChange}
+        />
+      </div>
     );
   }
 
   return (
-    <div className="my-4 px-4">
-      {content as ReactNode}
+    <div className="h-full overflow-x-auto">
+      <pre className="p-4 text-white/80 font-mono text-sm leading-6">
+        {content}
+      </pre>
     </div>
   );
 };

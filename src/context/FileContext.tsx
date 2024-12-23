@@ -1,166 +1,87 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { IFile, FileContextType } from '../types/file';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { File } from '../types/file';
 import { useLanguage } from './LanguageContext';
+import emailjs from '@emailjs/browser';
 
-const initialFiles: IFile[] = [
-  {
-    id: '1',
-    name: 'README.md',
-    content: {
-      fr: '# Portfolio\n\nBienvenue sur mon portfolio !',
-      en: '# Portfolio\n\nWelcome to my portfolio!'
-    },
-    language: 'markdown'
-  },
-  {
-    id: '2',
-    name: 'about.tsx',
-    content: {
-      fr: `export default function About() {
-  return (
-    <div className="about">
-      <h1>À propos de moi</h1>
-      <p>Développeur Full Stack avec une passion pour React et TypeScript</p>
-    </div>
-  )
-}`,
-      en: `export default function About() {
-  return (
-    <div className="about">
-      <h1>About me</h1>
-      <p>Full Stack Developer with a passion for React and TypeScript</p>
-    </div>
-  )
-}`
-    },
-    language: 'tsx'
-  },
-  {
-    id: '3',
-    name: 'projects.json',
-    content: {
-      fr: `{
-  "projets": [
-    {
-      "nom": "Portfolio VS Code",
-      "description": "Un portfolio inspiré de Visual Studio Code",
-      "technologies": ["React", "TypeScript", "Tailwind"]
-    },
-    {
-      "nom": "Autres Projets",
-      "description": "Bientôt disponible..."
-    }
-  ]
-}`,
-      en: `{
-  "projects": [
-    {
-      "name": "VS Code Portfolio",
-      "description": "A portfolio inspired by Visual Studio Code",
-      "technologies": ["React", "TypeScript", "Tailwind"]
-    },
-    {
-      "name": "Other Projects",
-      "description": "Coming soon..."
-    }
-  ]
-}`
-    },
-    language: 'json'
-  },
-  {
-    id: '4',
-    name: 'hello.py',
-    content: {
-      fr: `def dire_bonjour(nom):
-    """Cette fonction dit bonjour à quelqu'un"""
-    return f"Bonjour {nom} !"
-
-# Test de la fonction
-if __name__ == "__main__":
-    resultat = dire_bonjour("Monde")
-    print(resultat)`,
-      en: `def say_hello(name):
-    """This function says hello to someone"""
-    return f"Hello {name}!"
-
-# Test the function
-if __name__ == "__main__":
-    result = say_hello("World")
-    print(result)`
-    },
-    language: 'python'
-  },
-  {
-    id: '5',
-    name: 'Counter.tsx',
-    content: {
-      fr: `// Exemple de compteur interactif
-import { useState } from 'react';
-
-export default function Counter() {
-  const [count, setCount] = useState(0);
-  
-  return (
-    <div>
-      <h2>Compteur: {count}</h2>
-      <button onClick={() => setCount(count + 1)}>
-        Incrémenter
-      </button>
-    </div>
-  );
-}`,
-      en: `// Interactive counter example
-import { useState } from 'react';
-
-export default function Counter() {
-  const [count, setCount] = useState(0);
-  
-  return (
-    <div>
-      <h2>Counter: {count}</h2>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </div>
-  );
-}`
-    },
-    language: 'tsx'
-  }
-];
+interface FileContextType {
+  files: File[];
+  activeFile: File | null;
+  openedFiles: File[];
+  setActiveFile: (file: File | null) => void;
+  closeFile: (fileName: string) => void;
+}
 
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
 export function FileProvider({ children }: { children: ReactNode }) {
   const { language } = useLanguage();
-  const [files, setFiles] = useState<IFile[]>(initialFiles);
-  const [activeFile, setActiveFile] = useState<IFile | null>(null);
-  const [openedFiles, setOpenedFiles] = useState<IFile[]>([]);
+  
+  const initialFiles: File[] = [
+    {
+      name: 'home.tsx',
+      language: 'tsx',
+    
+    },
+    {
+      name: 'contact.json',
+      language: 'json',
+      content: {
+        fr: `{
+  "contact": {
+    "nom": "Benjamin THEYTAZ",
+    "titre": "Full Stack Engineer",
+    "email": "benjamin.theytaz@hotmail.fr",
+    "telephone": "+33652242463",
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/benjamin-theytaz",
+      "github": "https://github.com/Zat-Code"
+    }
+  }
+}`,
+        en: `{
+  "contact": {
+    "name": "Benjamin THEYTAZ",
+    "title": "Full Stack Engineer",
+    "email": "benjamin.theytaz@hotmail.fr",
+    "phone": "+33652242463",
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/benjamin-theytaz",
+      "github": "https://github.com/Zat-Code"
+    }
+  }
+}`
+      }
+    },
+    // Ajoutez ici vos autres fichiers initiaux
+  ];
 
-  const handleSetActiveFile = (file: IFile | null) => {
-    setActiveFile(file);
-    if (file && !openedFiles.find(f => f.id === file.id)) {
+  const [files] = useState<File[]>(initialFiles);
+  const [openedFiles, setOpenedFiles] = useState<File[]>([initialFiles[0]]);
+  const [activeFile, setActiveFile] = useState<File | null>(initialFiles[0]);
+
+  const handleSetActiveFile = (file: File | null) => {
+    if (file && !openedFiles.find(f => f.name === file.name)) {
       setOpenedFiles([...openedFiles, file]);
     }
+    setActiveFile(file);
   };
 
-  const closeFile = (fileId: string) => {
-    setOpenedFiles(openedFiles.filter(f => f.id !== fileId));
-    if (activeFile?.id === fileId) {
-      const remainingFiles = openedFiles.filter(f => f.id !== fileId);
-      setActiveFile(remainingFiles.length > 0 ? remainingFiles[remainingFiles.length - 1] : null);
+  const closeFile = (fileName: string) => {
+    const newOpenedFiles = openedFiles.filter(f => f.name !== fileName);
+    setOpenedFiles(newOpenedFiles);
+    
+    if (activeFile?.name === fileName) {
+      setActiveFile(newOpenedFiles[newOpenedFiles.length - 1] || null);
     }
   };
 
   return (
-    <FileContext.Provider value={{
-      files,
-      activeFile,
-      setActiveFile: handleSetActiveFile,
+    <FileContext.Provider value={{ 
+      files, 
+      activeFile, 
       openedFiles,
-      closeFile,
-      currentLanguage: language
+      setActiveFile: handleSetActiveFile, 
+      closeFile 
     }}>
       {children}
     </FileContext.Provider>

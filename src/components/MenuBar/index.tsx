@@ -4,13 +4,32 @@ import {
   VscChromeClose,
   VscCode
 } from 'react-icons/vsc';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface MenuBarProps {
   isMobile?: boolean;
+  onClose: () => void;
+  onTerminalToggle: () => void;
 }
 
-const MenuBar = ({ isMobile = false }: MenuBarProps) => {
-  const menuItems = ['File', 'Edit', 'Selection', 'View', 'Go', 'Run', 'Terminal', 'Help'];
+const MenuBar = ({ isMobile = false, onClose, onTerminalToggle }: MenuBarProps) => {
+  const { t } = useLanguage();
+  const menuItems = [
+    t('menu.file'),
+    t('menu.edit'),
+    t('menu.selection'),
+    t('menu.view'),
+    t('menu.go'),
+    t('menu.run'),
+    t('menu.terminal'),
+    t('menu.help')
+  ];
+
+  const handleMenuClick = (item: string) => {
+    if (item === t('menu.terminal')) {
+      onTerminalToggle();
+    }
+  };
 
   if (isMobile) {
     return (
@@ -18,9 +37,22 @@ const MenuBar = ({ isMobile = false }: MenuBarProps) => {
         {menuItems.map((item) => (
           <div 
             key={item}
-            className="px-4 py-2 text-white/80 hover:bg-[#505050]"
+            className={`
+              px-4 py-2 text-white/80 hover:bg-[#505050] cursor-pointer
+              ${item === t('menu.terminal') ? 'relative overflow-hidden group' : ''}
+            `}
+            onClick={() => handleMenuClick(item)}
           >
-            {item}
+            {item === t('menu.terminal') && (
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
+                <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
+              </div>
+            )}
+            <span className={item === t('menu.terminal') ? 'relative z-10' : ''}>
+              {item}
+            </span>
           </div>
         ))}
       </div>
@@ -40,9 +72,22 @@ const MenuBar = ({ isMobile = false }: MenuBarProps) => {
           {menuItems.map((item) => (
             <button
               key={item}
-              className="px-3 text-sm text-white/80 hover:bg-[#505050] h-8 flex items-center"
+              className={`
+                px-3 text-sm text-white/80 hover:bg-[#505050] h-8 flex items-center
+                ${item === t('menu.terminal') ? 'relative overflow-hidden group' : ''}
+              `}
+              onClick={() => handleMenuClick(item)}
             >
-              {item}
+              {item === t('menu.terminal') && (
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
+                  <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                  <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
+                </div>
+              )}
+              <span className={item === t('menu.terminal') ? 'relative z-10' : ''}>
+                {item}
+              </span>
             </button>
           ))}
         </div>
@@ -61,7 +106,10 @@ const MenuBar = ({ isMobile = false }: MenuBarProps) => {
         <button className="px-3 hover:bg-[#505050] h-8 flex items-center">
           <VscChromeMaximize className="text-white/80" />
         </button>
-        <button className="px-3 hover:bg-[#E81123] h-8 flex items-center">
+        <button 
+          className="px-3 hover:bg-[#E81123] h-8 flex items-center"
+          onClick={onClose}
+        >
           <VscChromeClose className="text-white/80" />
         </button>
       </div>

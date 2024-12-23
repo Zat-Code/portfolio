@@ -7,11 +7,11 @@ interface ActivityBarProps {
 
 const ActivityBar = ({ onSidebarToggle, isSidebarOpen }: ActivityBarProps) => {
   return (
-    <div className="h-full flex flex-col items-center py-2">
+    <div className="h-full flex flex-col items-center">
       <button 
         className={`
           w-12 h-12 flex items-center justify-center
-          relative
+          relative -mt-[2px]
           ${isSidebarOpen 
             ? 'text-white after:absolute after:left-0 after:top-0 after:h-full after:w-[2px] after:bg-[#d4d4d4]' 
             : 'text-white/60 hover:text-white'

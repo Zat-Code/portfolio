@@ -34,10 +34,15 @@ const StatusBar = () => {
           <VscFeedback className="text-sm" />
         </div>
         <button 
-          className="px-2 h-full hover:bg-[#2d2d2d] uppercase"
+          className="relative px-2 h-full hover:bg-[#2d2d2d] uppercase overflow-hidden group"
           onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
         >
-          {language}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
+            <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+            <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
+          </div>
+          <span className="relative z-10">{language}</span>
         </button>
       </div>
     </div>
