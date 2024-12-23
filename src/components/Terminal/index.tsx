@@ -52,10 +52,7 @@ Tux winks at you! 🐧`;
         if (args.length < 2) return 'Usage: cat <filename>';
         const file = files.find(f => f.name === args[1]);
         if (!file) return `File not found: ${args[1]}`;
-        if (file.translations) {
-          return file.translations[language];
-        }
-        return typeof file.content === 'string' ? file.content : JSON.stringify(file.content, null, 2);
+        return file.content[language];
       
       case 'pwd':
         return '/portfolio';

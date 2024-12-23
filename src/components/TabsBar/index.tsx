@@ -1,8 +1,8 @@
-import { useFiles } from '../../context/FileContext';
 import { VscClose, VscChevronDown } from 'react-icons/vsc';
+import { useFiles } from '../../context/FileContext';
 
 interface TabProps {
-  file: File;
+  file: IFile;
   isActive: boolean;
   onClose: () => void;
   onClick: () => void;
@@ -49,9 +49,9 @@ const TabsBar = () => {
       <div className="flex h-full overflow-x-auto flex-1">
         {openedFiles.map((file) => (
           <Tab
-            key={file.name}
+            key={file.id}
             file={file}
-            isActive={activeFile?.name === file.name}
+            isActive={activeFile?.id === file.id}
             onClose={() => closeFile(file.name)}
             onClick={() => setActiveFile(file)}
           />

@@ -1,39 +1,25 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { useLanguage } from './LanguageContext';
-
-interface File {
-  id: string;
-  name: string;
-  language: string;
-  content: string;
-  translations?: {
-    fr: string;
-    en: string;
-  };
-  isSettings?: boolean;
-}
+import React, { createContext, useContext, useState } from 'react';
+import { IFile } from '../types/file';
 
 interface FileContextType {
-  files: File[];
-  activeFile: File | null;
-  openedFiles: File[];
-  setActiveFile: (file: File | null) => void;
+  files: IFile[];
+  activeFile: IFile | null;
+  openedFiles: IFile[];
+  setActiveFile: (file: IFile | null) => void;
   closeFile: (fileName: string) => void;
+  isInterfaceOpen: boolean;
+  closeInterface: () => void;
+  openInterface: () => void;
 }
 
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
-export function FileProvider({ children }: { children: ReactNode }) {
-  const { language } = useLanguage();
-  
-  const getFileContent = (file: File) => {
-    if (file.translations) {
-      return file.translations[language];
-    }
-    return file.content;
-  };
+export const FileProvider = ({ children }: { children: React.ReactNode }) => {
+  const [activeFile, setActiveFile] = useState<IFile | null>(null);
+  const [openedFiles, setOpenedFiles] = useState<IFile[]>([]);
+  const [isInterfaceOpen, setIsInterfaceOpen] = useState(true);
 
-  const initialFiles: File[] = [
+  const initialFiles: IFile[] = [
     {
       id: 'home',
       name: 'home.tsx',
@@ -106,21 +92,14 @@ export default Home;`
     }
   ];
 
-  const [files] = useState<File[]>(initialFiles);
-  const [openedFiles, setOpenedFiles] = useState<File[]>([initialFiles[0]]);
-  const [activeFile, setActiveFile] = useState<File | null>(initialFiles[0]);
+  const [files] = useState<IFile[]>(initialFiles);
 
-  const handleSetActiveFile = (file: File | null) => {
+  const handleSetActiveFile = (file: IFile | null) => {
     if (file) {
-      const updatedFile = {
-        ...file,
-        content: getFileContent(file)
-      };
-      
       if (!openedFiles.find(f => f.id === file.id)) {
-        setOpenedFiles([...openedFiles, updatedFile]);
+        setOpenedFiles([...openedFiles, file]);
       }
-      setActiveFile(updatedFile);
+      setActiveFile(file);
     } else {
       setActiveFile(null);
     }
@@ -133,6 +112,20 @@ export default Home;`
     if (activeFile?.name === fileName) {
       setActiveFile(newOpenedFiles[newOpenedFiles.length - 1] || null);
     }
+
+    if (newOpenedFiles.length === 0) {
+      closeInterface();
+    }
+  };
+
+  const closeInterface = () => {
+    setIsInterfaceOpen(false);
+    setActiveFile(null);
+    setOpenedFiles([]);
+  };
+
+  const openInterface = () => {
+    setIsInterfaceOpen(true);
   };
 
   return (
@@ -140,18 +133,21 @@ export default Home;`
       files, 
       activeFile, 
       openedFiles,
-      setActiveFile: handleSetActiveFile, 
-      closeFile 
+      setActiveFile: handleSetActiveFile,
+      closeFile,
+      isInterfaceOpen,
+      closeInterface,
+      openInterface
     }}>
       {children}
     </FileContext.Provider>
   );
-}
+};
 
-export function useFiles() {
+export const useFiles = () => {
   const context = useContext(FileContext);
   if (context === undefined) {
     throw new Error('useFiles must be used within a FileProvider');
   }
   return context;
-} 
+}; 
