@@ -10,9 +10,11 @@ interface MenuBarProps {
   isMobile?: boolean;
   onClose: () => void;
   onTerminalToggle: () => void;
+  onFullScreenToggle: () => void;
+  isFullScreen: boolean;
 }
 
-const MenuBar = ({ isMobile = false, onClose, onTerminalToggle }: MenuBarProps) => {
+const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenToggle, isFullScreen }: MenuBarProps) => {
   const { t } = useLanguage();
   const menuItems = [
     t('menu.file'),
@@ -64,7 +66,7 @@ const MenuBar = ({ isMobile = false, onClose, onTerminalToggle }: MenuBarProps) 
       {/* Logo et Menu Items */}
       <div className="flex items-center flex-1">
         <div className="flex items-center px-3 hover:bg-[#505050]">
-          <VscCode className="text-[#5FB2D7] text-xl" />
+          <VscCode className="w-5 h-5 text-white/80" />
         </div>
         
         {/* Menu items - cachés sur petit écran */}
@@ -103,14 +105,17 @@ const MenuBar = ({ isMobile = false, onClose, onTerminalToggle }: MenuBarProps) 
         <button className="px-3 hover:bg-[#505050] h-8 flex items-center">
           <VscChromeMinimize className="text-white/80" />
         </button>
-        <button className="px-3 hover:bg-[#505050] h-8 flex items-center">
+        <button 
+          className="px-3 hover:bg-[#505050] h-8 flex items-center"
+          onClick={onFullScreenToggle}
+        >
           <VscChromeMaximize className="text-white/80" />
         </button>
         <button 
-          className="px-3 hover:bg-[#E81123] h-8 flex items-center"
+          className="px-3 bg-[#E81123] hover:bg-[#F1707A] h-8 flex items-center"
           onClick={onClose}
         >
-          <VscChromeClose className="text-white/80" />
+          <VscChromeClose className="text-white" />
         </button>
       </div>
     </div>

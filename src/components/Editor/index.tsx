@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useFiles } from '../../context/FileContext';
 import { useLanguage } from '../../context/LanguageContext';
 import CodeEditor from './CodeEditor';
-import HomePage from './HomePage';
+import HomePreview from './previews/HomePreview';
 import SettingsEditor from './SettingsEditor';
 import ContactPreview from './previews/ContactPreview';
 import ExperiencePreview from './previews/ExperiencePreview';
+import PersonalProjectPreview from './previews/PersonalProjectPreview';
 import { VscPreview, VscCode } from 'react-icons/vsc';
 import TabsBar from '../TabsBar';
 
@@ -15,7 +16,8 @@ const Editor = () => {
   const [previewModeFiles, setPreviewModeFiles] = useState<{ [key: string]: boolean }>({
     'home.tsx': true,
     'contact.json': true,
-    'experience.py': true
+    'experience.py': true,
+    'personal_project.md': true
   });
 
   const isPreviewMode = (fileName: string) => {
@@ -35,45 +37,45 @@ const Editor = () => {
     <div className="h-full flex flex-col">
       <TabsBar />
       <div className="flex-1 flex flex-col min-h-0">
-        {!activeFile && <HomePage />}
+        {!activeFile && <HomePreview />}
         
         {activeFile && activeFile.isSettings && <SettingsEditor />}
 
         {activeFile && !activeFile.isSettings && (
           <div className="flex flex-col h-full">
             {/* Bouton de basculement Preview/Editor */}
-            {(activeFile.name === 'contact.json' || activeFile.name === 'experience.py' || (activeFile.language === 'tsx' && activeFile.name !== 'home.tsx')) && (
+            {(activeFile.name === 'contact.json' || 
+              activeFile.name === 'experience.py' || 
+              activeFile.name === 'personal_project.md' ||
+              (activeFile.language === 'tsx' && activeFile.name !== 'home.tsx')) && (
               <div className="flex-none flex px-4 py-2 border-b border-[#2d2d2e] bg-[#1e1e1e]">
                 <button
                   onClick={() => togglePreviewMode(activeFile.name)}
                   className="
-                    px-3 py-1.5 
-                    bg-[#2d2d2e] hover:bg-[#3d3d3e] 
-                    text-white/80 rounded-md
-                    border border-[#3d3d3e] hover:border-[#007acc]
-                    transition-all duration-200
-                    flex items-center gap-2
+                    px-3 sm:px-4 py-2 
+                    bg-[#007acc] hover:bg-[#006bb3] 
+                    text-white rounded-sm 
+                    flex items-center gap-2 
+                    relative overflow-hidden group 
+                    text-sm sm:text-base
                     min-w-[100px]
                     justify-center
-                    sm:text-sm md:text-base
-                    relative
-                    group
                   "
                 >
+                  <div className="absolute inset-0">
+                    <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  </div>
                   {isPreviewMode(activeFile.name) ? (
                     <>
-                      <VscCode className="text-lg text-[#007acc]" />
-                      <span>Editor</span>
+                      <VscCode className="relative z-10 text-lg" />
+                      <span className="relative z-10">Editor</span>
                     </>
                   ) : (
                     <>
-                      <VscPreview className="text-lg text-[#007acc]" />
-                      <span>Preview</span>
+                      <VscPreview className="relative z-10 text-lg" />
+                      <span className="relative z-10">Preview</span>
                     </>
                   )}
-                  <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    <div className="absolute inset-0 rounded-md bg-[#007acc]/5" />
-                  </div>
                 </button>
               </div>
             )}
@@ -85,9 +87,11 @@ const Editor = () => {
                   {activeFile.name === 'contact.json' ? (
                     <ContactPreview />
                   ) : activeFile.name === 'home.tsx' ? (
-                    <HomePage />
+                    <HomePreview />
                   ) : activeFile.name === 'experience.py' ? (
                     <ExperiencePreview />
+                  ) : activeFile.name === 'personal_project.md' ? (
+                    <PersonalProjectPreview />
                   ) : (
                     <CodeEditor 
                       code={activeFile.content ? activeFile.content[language] : ''} 

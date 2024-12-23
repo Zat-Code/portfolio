@@ -53,9 +53,9 @@ const ContactPreview = () => {
   };
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-[#252526] rounded-lg p-6">
+    <div className="h-full overflow-y-auto p-4 bg-[#1e1e1e] text-white">
+      <div className="max-w-5xl mx-auto space-y-6">
+        <div className="rounded-lg p-6 border-2 border-[#007acc]">
           {/* Contact Info */}
           <div className="mb-6 flex flex-wrap gap-6">
             <a 

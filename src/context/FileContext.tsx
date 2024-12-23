@@ -228,45 +228,97 @@ print(f"Description: {profile.description}")
 # Congratulations, you're officially as curious as I am 🎉
 `;
 
-const personalProjectContentFr = `# Projet Personnel - DataStrike
+const personalProjectContentFr = `# Projets Personnels
 
-## Description
-Plateforme web open source pour l'analyse des données de match d'Overwatch
+## DataStrike (2024) 
+### (aka Le Sherlock Holmes des Matchs Overwatch 🔍)
 
-## Technologies utilisées
-- React.js
-- Graph.js
-- Node.js
-- Kafka
-- Postgresql
+Plateforme web open source pour l'analyse des données de match d'Overwatch, utilisée par plusieurs équipes professionnelles et semi-professionnelles.
 
-## Statistiques
-- 200 utilisateurs actifs
-- Plus de 5000 matches analysés
+### Fonctionnalités clés
+- Timeline interactive des actions clés (comme Netflix, mais pour les kills 😎)
+- Tracking des compositions d'équipe (qui joue quoi, quand, et pourquoi pas)
+- Détection automatique des fights (parce que compter manuellement, c'est tellement 2023)
+- Graphiques comparatifs pour évaluer les performances (pour les data-nerds comme nous)
+- Système de scouting pour dénicher les futurs pros (aka "Talent Hunter 3000")
 
-## Liens
+### Tech Stack
+- Front-end: React, Shadcn, Tailwind CSS, Chart.js (parce que les beaux graphiques, c'est la vie)
+- Back-end: AdonisJS, WebSocket (pour du real-time plus rapide que mon café du matin)
+- Python: Parsing et modélisation des données (là où la magie opère)
+
+### Liens
 - [GitHub](https://github.com/DataStrike)
-- [Site Web](https://datastrike.cloud/)`;
+- [Site Web](https://datastrike.cloud/)
 
-const personalProjectContentEn = `# Personal Project - DataStrike
+## Halloween Mission AGC (2022)
+### (aka Le Site qui fait Peur... aux Développeurs Front-end 👻)
 
-## Description
-Open source web platform for Overwatch match data analysis
+Site web interactif créé pour un événement Halloween, mélangeant ambiance effrayante et éléments d'escape game. 
+Développé en mode "speedrun" (quelques jours seulement), comme dans les films d'horreur où il faut aller vite !
 
-## Technologies
-- React.js
-- Graph.js
-- Node.js
-- Kafka
-- Postgresql
+> Note : Non responsive par manque de temps... ou par choix artistique ? 🤔
+> (Disons que c'est un feature, pas un bug)
 
-## Statistics
-- 200 active users
-- Over 5000 matches analyzed
+## CodinGame Spring Challenge 2022
+### (aka L'Art de la Guerre avec des Monstres 🎮)
 
-## Links
+Participation au challenge "Spider Attack" - un jeu de stratégie en temps réel où l'objectif est de protéger sa base des vagues de monstres.
+
+### La Stratégie du Champion
+- Création de multiples classes pour chaque héros (comme dans un RPG, mais en plus nerd)
+- Développement de compositions adaptées aux phases de jeu
+- Analyse en temps réel de la stratégie adverse (comme dans les films d'espionnage, mais avec du code)
+- Des centaines de milliers de matchs d'entraînement (RIP les GPU)
+
+> Fun fact : Mon IA a joué plus de parties que je n'ai bu de cafés pendant le développement
+> (et croyez-moi, j'ai bu BEAUCOUP de café ☕)`;
+
+const personalProjectContentEn = `# Personal Projects
+
+## DataStrike (2024)
+### (aka The Overwatch Match Detective 🔍)
+
+Open source web platform for Overwatch match data analysis, used by several professional and semi-professional teams.
+
+### Key Features
+- Interactive timeline of key actions (like Netflix, but for kills 😎)
+- Team composition tracking (who plays what, when, and why not)
+- Automatic fight detection (because manual counting is so 2023)
+- Comparative graphs for performance evaluation (for data nerds like us)
+- Scouting system for future pros (aka "Talent Hunter 3000")
+
+### Tech Stack
+- Front-end: React, Shadcn, Tailwind CSS, Chart.js (because beautiful graphs are life)
+- Back-end: AdonisJS, WebSocket (for real-time faster than my morning coffee)
+- Python: Data parsing and modeling (where the magic happens)
+
+### Links
 - [GitHub](https://github.com/DataStrike)
-- [Website](https://datastrike.cloud/)`;
+- [Website](https://datastrike.cloud/)
+
+## Halloween Mission AGC (2022)
+### (aka The Website that Scares... Front-end Developers 👻)
+
+Interactive website created for a Halloween event, mixing spooky atmosphere with escape game elements.
+Developed in "speedrun" mode (just a few days), like in horror movies where you have to be quick!
+
+> Note: Not responsive due to time constraints... or artistic choice? 🤔
+> (Let's call it a feature, not a bug)
+
+## CodinGame Spring Challenge 2022
+### (aka The Art of Monster Warfare 🎮)
+
+Participation in the "Spider Attack" challenge - a real-time strategy game where the goal is to protect your base from monster waves.
+
+### The Champion's Strategy
+- Creation of multiple classes for each hero (like in an RPG, but nerdier)
+- Development of compositions adapted to game phases
+- Real-time analysis of opponent's strategy (like in spy movies, but with code)
+- Hundreds of thousands of training matches (RIP GPUs)
+
+> Fun fact: My AI played more games than I drank coffees during development
+> (and trust me, I drank A LOT of coffee ☕)`;
 
 const contactContentFr = `{
   "contact": {
@@ -360,9 +412,9 @@ export const FileProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSetActiveFile = (file: IFile | null) => {
     if (file) {
       if (!openedFiles.find(f => f.id === file.id)) {
-        setOpenedFiles([...openedFiles, file]);
-      }
-      setActiveFile(file);
+      setOpenedFiles([...openedFiles, file]);
+    }
+    setActiveFile(file);
     } else {
       setActiveFile(null);
     }
@@ -396,7 +448,7 @@ export const FileProvider = ({ children }: { children: React.ReactNode }) => {
       files, 
       activeFile, 
       openedFiles,
-      setActiveFile: handleSetActiveFile,
+      setActiveFile: handleSetActiveFile, 
       closeFile,
       isInterfaceOpen,
       closeInterface,

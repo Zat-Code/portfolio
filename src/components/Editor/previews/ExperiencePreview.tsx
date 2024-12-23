@@ -1,9 +1,33 @@
 import { useLanguage } from '../../../context/LanguageContext';
 import { SiPython, SiReact, SiAngular, SiVuedotjs, SiD3Dotjs, SiLeaflet, SiFigma, SiFlask, SiDjango, SiNodedotjs, SiAdonisjs, SiMongodb, SiPostgresql, SiPrisma, SiTensorflow, SiPytorch, SiOpencv, SiScikitlearn, SiDocker, SiNginx, SiKubernetes, SiKong } from 'react-icons/si';
-import { VscGraph } from 'react-icons/vsc';
+import { VscGraph, VscSymbolClass, VscMortarBoard, VscCode, VscTools } from 'react-icons/vsc';
+import { BsPersonVcard } from 'react-icons/bs';
 
 const ExperiencePreview = () => {
   const { language } = useLanguage();
+
+  const quotes = {
+    fr: [
+      {
+        text: "Un bon développeur est un développeur fainéant (qui automatise tout)",
+        author: "Philosophie Dev #1"
+      },
+      {
+        text: "Le code est comme une blague : s'il faut l'expliquer, il est mauvais",
+        author: "Philosophie Dev #2"
+      }
+    ],
+    en: [
+      {
+        text: "A good developer is a lazy developer (who automates everything)",
+        author: "Dev Philosophy #1"
+      },
+      {
+        text: "Code is like a joke: if you have to explain it, it's bad",
+        author: "Dev Philosophy #2"
+      }
+    ]
+  };
 
   const skillsWithIcons = {
     "Front-end": [
@@ -86,82 +110,55 @@ const ExperiencePreview = () => {
     );
   };
 
-  const renderQuote = () => {
-    const quotes = {
-      fr: [
-        {
-          text: "Un bon développeur est un développeur fainéant (qui automatise tout)",
-          author: "Philosophie Dev #1"
-        },
-        {
-          text: "Le code est comme une blague : s'il faut l'expliquer, il est mauvais",
-          author: "Philosophie Dev #2"
-        }
-      ],
-      en: [
-        {
-          text: "A good developer is a lazy developer (who automates everything)",
-          author: "Dev Philosophy #1"
-        },
-        {
-          text: "Code is like a joke: if you have to explain it, it's bad",
-          author: "Dev Philosophy #2"
-        }
-      ]
-    };
-
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {quotes[language].map((quote, index) => (
-          <div 
-            key={index}
-            className="relative p-6 bg-[#2d2d2d] rounded-lg border border-[#007acc]/20 group hover:border-[#007acc]/40 transition-colors"
-          >
-            <div className="absolute -top-3 left-4 px-2 bg-[#1e1e1e] text-[#007acc] text-sm">
-              {quote.author}
-            </div>
-            <p className="text-white/80 italic">
-              "{quote.text}"
-            </p>
-            <div className="absolute bottom-2 right-2 text-[#007acc] opacity-10 text-4xl font-serif group-hover:opacity-20 transition-opacity">
-              "
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <div className="h-full overflow-y-auto p-6 bg-[#1e1e1e] text-white">
+    <div className="h-full overflow-y-auto p-4 bg-[#1e1e1e] text-white">
       <div className="max-w-5xl mx-auto space-y-8">
-        {/* Description */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-6 text-[#007acc]">
-            {language === 'fr' ? "À propos" : "About"}
+        <div className="space-y-4">
+          <h2 className="text-2xl text-[#007acc] flex items-center gap-2">
+            <BsPersonVcard />
+            <span>Description</span>
           </h2>
-          
-          {/* Description d'abord */}
-          <div className="bg-[#2d2d2d] p-6 rounded-lg border border-[#007acc]/20 mb-8">
+          <div className="rounded-lg p-6 border-2 border-[#007acc]">
             <p className="text-white/80 text-lg leading-relaxed">
               {language === 'fr'
                 ? <>Développeur passionné avec une <span className="text-[#007acc]">double expertise en vision par ordinateur et développement full-stack</span>. J'aime relever des défis techniques complexes et transformer des idées innovantes en solutions concrètes. Mon approche ? Concevoir des architectures élégantes et robustes, tout en gardant un œil sur les dernières technologies (oui, je suis ce dev qui s'enthousiasme pour chaque nouvelle feature de React 😄). Spécialisé dans la <span className="text-[#007acc]">création de solutions end-to-end</span>, de l'architecture à l'intégration cloud, je m'épanouis particulièrement dans les projets qui repoussent les limites technologiques.</>
                 : <>Passionate developer with <span className="text-[#007acc]">dual expertise in computer vision and full-stack development</span>. I love tackling complex technical challenges and turning innovative ideas into concrete solutions. My approach? Designing elegant and robust architectures while keeping an eye on the latest technologies (yes, I'm that dev who gets excited about every new React feature 😄). Specialized in <span className="text-[#007acc]">creating end-to-end solutions</span>, from architecture to cloud integration, I particularly thrive in projects that push technological boundaries.</>}
             </p>
           </div>
+        </div>
 
-          {/* Citations ensuite */}
-          {renderQuote()}
-        </section>
+        <div className="space-y-4">
+          <h2 className="text-2xl text-[#007acc] flex items-center gap-2">
+            <VscSymbolClass />
+            <span>Philosophies</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {quotes[language].map((quote, index) => (
+              <div 
+                key={index}
+                className="relative p-6 rounded-lg border-2 border-[#007acc] group hover:border-[#007acc] transition-colors"
+              >
+                <div className="absolute -top-3 left-4 px-2 bg-[#1e1e1e] text-[#007acc] text-sm">
+                  {quote.author}
+                </div>
+                <p className="text-white/80 italic">
+                  "{quote.text}"
+                </p>
+                <div className="absolute bottom-2 right-2 text-[#007acc] opacity-10 text-4xl font-serif group-hover:opacity-20 transition-opacity">
+                  "
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        {/* Expérience */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-6 text-[#007acc] flex items-center gap-3">
-            <SiPython className="text-yellow-300" />
-            {language === 'fr' ? "Expérience" : "Experience"}
+        <div className="space-y-4">
+          <h2 className="text-2xl text-[#007acc] flex items-center gap-2">
+            <VscCode />
+            <span>Expérience</span>
           </h2>
           
-          <div className="space-y-8">
+          <div className="rounded-lg p-6 border-2 border-[#007acc] space-y-8">
             <div>
               <h3 className="text-xl font-medium mb-3 text-white/90 flex items-center gap-2">
                 {language === 'fr' ? "Référent Technique" : "Technical Lead"}
@@ -235,36 +232,37 @@ const ExperiencePreview = () => {
               </ul>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Compétences */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6 text-[#007acc] flex items-center gap-2">
-            {language === 'fr' ? "Compétences" : "Skills"}
-            <span className="text-xs text-[#007acc]/60">
-              {language === 'fr' ? "(aka Mon Arsenal Tech)" : "(aka My Tech Arsenal)"}
-            </span>
+        <div className="space-y-4">
+          <h2 className="text-2xl text-[#007acc] flex items-center gap-2">
+            <VscTools />
+            <span>Compétences</span>
           </h2>
           
-          {renderSkillCloud()}
-        </section>
-
-        {/* Formation */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4 text-[#007acc]">
-            {language === 'fr' ? "Formation" : "Education"}
-          </h2>
-          
-          <div>
-            <h3 className="text-xl font-medium text-white/90">
-              {language === 'fr'
-                ? "Master Système Embarqués pour le traitement d'image"
-                : "Master's in Embedded Systems for Image Processing"}
-            </h3>
-            <div className="text-white/70">EUPI</div>
-            <div className="text-sm text-white/60">Clermont-Ferrand, France | 2017 - 2019</div>
+          <div className="rounded-lg p-6 border-2 border-[#007acc]">
+            {renderSkillCloud()}
           </div>
-        </section>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl text-[#007acc] flex items-center gap-2">
+            <VscMortarBoard />
+            <span>Formation</span>
+          </h2>
+          
+          <div className="rounded-lg p-6 border-2 border-[#007acc]">
+            <div>
+              <h3 className="text-xl font-medium text-white/90">
+                {language === 'fr'
+                  ? "Master Système Embarqués pour le traitement d'image"
+                  : "Master's in Embedded Systems for Image Processing"}
+              </h3>
+              <div className="text-white/70">EUPI</div>
+              <div className="text-sm text-white/60">Clermont-Ferrand, France | 2017 - 2019</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

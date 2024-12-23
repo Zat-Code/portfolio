@@ -8,7 +8,13 @@ import Terminal from '../components/Terminal';
 import { VscMenu, VscFolderOpened } from 'react-icons/vsc';
 import { useFiles } from '../context/FileContext';
 
-const VSCodeLayout = () => {
+interface VSCodeLayoutProps {
+  onFullScreenToggle: () => void;
+  onClose: () => void;
+  isFullScreen: boolean;
+}
+
+const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [sidebarWidth, setSidebarWidth] = useState(300);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -60,6 +66,8 @@ const VSCodeLayout = () => {
         <MenuBar 
           onTerminalToggle={() => setIsTerminalOpen(!isTerminalOpen)} 
           onClose={handleClose}
+          onFullScreenToggle={onFullScreenToggle}
+          isFullScreen={isFullScreen}
         />
       </div>
 
@@ -77,7 +85,7 @@ const VSCodeLayout = () => {
         )}
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-auto">
+          <div className={`flex-1 overflow-auto ${isTerminalOpen ? 'h-[60vh]' : ''}`}>
             <Editor />
           </div>
           {isTerminalOpen && (
