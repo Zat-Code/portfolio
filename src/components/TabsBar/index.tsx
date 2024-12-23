@@ -13,7 +13,7 @@ const Tab = ({ name, isActive, onClose, onClick }: TabProps) => (
   <div 
     className={`h-full flex items-center px-3 border-r border-[#1e1e1e] cursor-pointer group
       ${isActive 
-        ? 'bg-[#1e1e1e] text-white border-t-2 border-t-[#007acc]' 
+        ? 'bg-[#1e1e1e] text-white border-b-2 border-b-[#007acc]'
         : 'bg-[#2d2d2d] text-white/60 hover:text-white/80'}`
     }
     onClick={onClick}
