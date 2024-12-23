@@ -1,7 +1,17 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { File } from '../types/file';
 import { useLanguage } from './LanguageContext';
-import emailjs from '@emailjs/browser';
+
+interface File {
+  id: string;
+  name: string;
+  language: string;
+  content: string;
+  translations?: {
+    fr: string;
+    en: string;
+  };
+  isSettings?: boolean;
+}
 
 interface FileContextType {
   files: File[];
@@ -16,16 +26,58 @@ const FileContext = createContext<FileContextType | undefined>(undefined);
 export function FileProvider({ children }: { children: ReactNode }) {
   const { language } = useLanguage();
   
+  const getFileContent = (file: File) => {
+    if (file.translations) {
+      return file.translations[language];
+    }
+    return file.content;
+  };
+
   const initialFiles: File[] = [
     {
+      id: 'home',
       name: 'home.tsx',
       language: 'tsx',
-    
+      content: '',
+      translations: {
+        fr: `// Composant d'accueil
+import { useLanguage } from '../context/LanguageContext';
+
+const Home = () => {
+  const { t } = useLanguage();
+  
+  return (
+    <div>
+      <h1>{t('welcome')}</h1>
+      <p>{t('description')}</p>
+    </div>
+  );
+};
+
+export default Home;`,
+        en: `// Home component
+import { useLanguage } from '../context/LanguageContext';
+
+const Home = () => {
+  const { t } = useLanguage();
+  
+  return (
+    <div>
+      <h1>{t('welcome')}</h1>
+      <p>{t('description')}</p>
+    </div>
+  );
+};
+
+export default Home;`
+      }
     },
     {
+      id: 'contact',
       name: 'contact.json',
       language: 'json',
-      content: {
+      content: '',
+      translations: {
         fr: `{
   "contact": {
     "nom": "Benjamin THEYTAZ",
@@ -51,8 +103,7 @@ export function FileProvider({ children }: { children: ReactNode }) {
   }
 }`
       }
-    },
-    // Ajoutez ici vos autres fichiers initiaux
+    }
   ];
 
   const [files] = useState<File[]>(initialFiles);
@@ -60,10 +111,19 @@ export function FileProvider({ children }: { children: ReactNode }) {
   const [activeFile, setActiveFile] = useState<File | null>(initialFiles[0]);
 
   const handleSetActiveFile = (file: File | null) => {
-    if (file && !openedFiles.find(f => f.name === file.name)) {
-      setOpenedFiles([...openedFiles, file]);
+    if (file) {
+      const updatedFile = {
+        ...file,
+        content: getFileContent(file)
+      };
+      
+      if (!openedFiles.find(f => f.id === file.id)) {
+        setOpenedFiles([...openedFiles, updatedFile]);
+      }
+      setActiveFile(updatedFile);
+    } else {
+      setActiveFile(null);
     }
-    setActiveFile(file);
   };
 
   const closeFile = (fileName: string) => {

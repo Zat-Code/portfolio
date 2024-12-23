@@ -1,17 +1,41 @@
 import { useState, useRef, useEffect } from 'react';
 import { useFiles } from '../../context/FileContext';
 import { useLanguage } from '../../context/LanguageContext';
-import { VscChevronRight, VscChevronDown } from 'react-icons/vsc';
+import { 
+  VscChevronRight, 
+  VscChevronDown, 
+  VscFolder, 
+  VscJson, 
+  VscFile 
+} from 'react-icons/vsc';
+import { 
+  SiReact, 
+  SiTypescript,
+  SiJavascript,
+  SiCss3,
+  SiHtml5
+} from 'react-icons/si';
 
 interface SidebarProps {
   width?: number;
   onWidthChange?: (width: number) => void;
 }
 
+const getFileIcon = (fileName: string) => {
+  if (fileName.endsWith('.tsx') || fileName.endsWith('.jsx')) return <SiReact className="text-[#61dafb]" />;
+  if (fileName.endsWith('.ts')) return <SiTypescript className="text-[#3178c6]" />;
+  if (fileName.endsWith('.js')) return <SiJavascript className="text-[#f7df1e]" />;
+  if (fileName.endsWith('.css')) return <SiCss3 className="text-[#264de4]" />;
+  if (fileName.endsWith('.html')) return <SiHtml5 className="text-[#e34f26]" />;
+  if (fileName.endsWith('.json')) return <VscJson className="text-[#faa43a]" />;
+  return <VscFile />;
+};
+
 const Sidebar = ({ width = 300, onWidthChange }: SidebarProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const startDragX = useRef<number>(0);
   const startWidth = useRef<number>(0);
+  const [isFolderOpen, setIsFolderOpen] = useState(true);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -57,22 +81,31 @@ const Sidebar = ({ width = 300, onWidthChange }: SidebarProps) => {
       </div>
       
       <div className="text-white/80">
-        <div className="flex items-center px-2 py-1 hover:bg-[#2a2d2e] cursor-pointer">
-          <VscChevronDown className="mr-1" />
+        <div 
+          className="flex items-center px-2 py-1 hover:bg-[#2a2d2e] cursor-pointer"
+          onClick={() => setIsFolderOpen(!isFolderOpen)}
+        >
+          {isFolderOpen ? <VscChevronDown className="mr-1" /> : <VscChevronRight className="mr-1" />}
+          <VscFolder className="mr-2 text-[#dcb67a]" />
           <span>Portfolio</span>
         </div>
         
-        <div className="pl-6">
-          {files.map((file) => (
-            <div
-              key={file.id}
-              className="flex items-center px-2 py-1 hover:bg-[#2a2d2e] cursor-pointer"
-              onClick={() => setActiveFile(file)}
-            >
-              <span>{file.name}</span>
-            </div>
-          ))}
-        </div>
+        {isFolderOpen && (
+          <div className="pl-6">
+            {files.map((file) => (
+              <div
+                key={file.id}
+                className="flex items-center px-2 py-1 hover:bg-[#2a2d2e] cursor-pointer"
+                onClick={() => setActiveFile(file)}
+              >
+                <div className="mr-2">
+                  {getFileIcon(file.name)}
+                </div>
+                <span>{file.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div 

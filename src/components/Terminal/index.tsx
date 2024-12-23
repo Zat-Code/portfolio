@@ -30,6 +30,21 @@ const Terminal = ({ onClose }: TerminalProps) => {
     const cmd = args[0].toLowerCase();
 
     switch (cmd) {
+      case 'penguin':
+        return `
+        .___.
+       /     \\
+      | O _ O |
+      /  \\_/  \\
+    .' /     \\ '.
+   / _|       |_ \\
+  (_/ |       | \\_)
+      \\       /
+     __\\_>-<_/__   
+     ~;/     \\;~
+
+Tux winks at you! 🐧`;
+
       case 'ls':
         return files.map(f => f.name).join('\n');
       
@@ -37,7 +52,10 @@ const Terminal = ({ onClose }: TerminalProps) => {
         if (args.length < 2) return 'Usage: cat <filename>';
         const file = files.find(f => f.name === args[1]);
         if (!file) return `File not found: ${args[1]}`;
-        return file.content[language];
+        if (file.translations) {
+          return file.translations[language];
+        }
+        return typeof file.content === 'string' ? file.content : JSON.stringify(file.content, null, 2);
       
       case 'pwd':
         return '/portfolio';
@@ -50,6 +68,9 @@ const Terminal = ({ onClose }: TerminalProps) => {
         return `
 Available Commands:
 ------------------
+
+Fun:
+  penguin              🐧 Affiche un joli pingouin ASCII (Easter egg!)
 
 File Operations:
   ls                    List all files in the current directory
@@ -70,11 +91,13 @@ Tips:
   - Press Ctrl+L to clear the screen
   - Type 'cat' followed by a filename to view its contents
   - All commands work with the current virtual file system
+  - Try the 'penguin' command for a surprise! 🐧
 
 Examples:
   $ ls                 # List all files
   $ cat Counter.tsx    # View Counter component code
   $ pwd               # See current directory
+  $ penguin           # Show ASCII penguin
 `;
       
       default:
@@ -121,7 +144,9 @@ Examples:
       if (!isDragging) return;
       
       const deltaY = startDragY.current - e.clientY;
-      const newHeight = Math.min(Math.max(startHeight.current + deltaY, 100), window.innerHeight - 200);
+      const minHeight = 150; // Hauteur minimale
+      const maxHeight = window.innerHeight * 0.8; // 80% de la hauteur de la fenêtre
+      const newHeight = Math.min(Math.max(startHeight.current + deltaY, minHeight), maxHeight);
       setHeight(newHeight);
     };
 

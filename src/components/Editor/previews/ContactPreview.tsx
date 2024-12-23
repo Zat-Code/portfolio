@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { VscMail, VscGithubInverted } from 'react-icons/vsc';
 import { SiLinkedin } from 'react-icons/si';
@@ -6,6 +6,13 @@ import emailjs from '@emailjs/browser';
 
 const ContactPreview = () => {
   const { t } = useLanguage();
+
+  useEffect(() => {
+    emailjs.init({
+      publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+    });
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,17 +26,19 @@ const ContactPreview = () => {
     setStatus('sending');
 
     try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Benjamin THEYTAZ',
+        reply_to: formData.email
+      };
+
       const response = await emailjs.send(
-        'VOTRE_SERVICE_ID',  // ex: 'service_abc123'
-        'VOTRE_TEMPLATE_ID', // ex: 'template_xyz789'
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          to_email: 'benjamin.theytaz@hotmail.fr'
-        },
-        'VOTRE_PUBLIC_KEY'  // ex: 'user_def456'
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams
       );
 
       if (response.status === 200) {
