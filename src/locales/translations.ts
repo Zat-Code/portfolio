@@ -12,7 +12,16 @@ export const translations = {
     'menu.terminal': 'Terminal',
     'menu.help': 'Aide',
     'status.connected': 'Connecté',
-    'status.main': 'principal'
+    'status.main': 'principal',
+    'menu.new': 'Nouveau',
+    'menu.open': 'Ouvrir',
+    'menu.save': 'Enregistrer',
+    'menu.undo': 'Annuler',
+    'menu.redo': 'Rétablir',
+    'menu.find': 'Rechercher',
+    'menu.git': 'Git',
+    'menu.about': 'À propos',
+    'menu.documentation': 'Documentation'
   },
   en: {
     'explorer': 'EXPLORER',
@@ -27,6 +36,15 @@ export const translations = {
     'menu.terminal': 'Terminal',
     'menu.help': 'Help',
     'status.connected': 'Connected',
-    'status.main': 'main'
+    'status.main': 'main',
+    'menu.new': 'New',
+    'menu.open': 'Open',
+    'menu.save': 'Save',
+    'menu.undo': 'Undo',
+    'menu.redo': 'Redo',
+    'menu.find': 'Find',
+    'menu.git': 'Git',
+    'menu.about': 'About',
+    'menu.documentation': 'Documentation'
   }
 }; 

@@ -6,9 +6,26 @@ export default {
   ],
   theme: {
     extend: {
-      spacing: {
-        'screen': '100vh',
-        'full': '100%',
+      keyframes: {
+        'shine-silver': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
+        },
+        'shine-silver-delayed': {
+          '0%': { transform: 'translateX(-100%)' },
+          '50%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
+        },
+        'shine-silver-bright': {
+          '0%': { transform: 'translateX(-100%)' },
+          '25%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
+        }
+      },
+      animation: {
+        'shine-silver': 'shine-silver 3s linear infinite',
+        'shine-silver-delayed': 'shine-silver-delayed 3s linear infinite',
+        'shine-silver-bright': 'shine-silver-bright 3s linear infinite'
       }
     },
   },

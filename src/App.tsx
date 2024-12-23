@@ -1,11 +1,20 @@
 import VSCodeLayout from './layouts/VSCodeLayout'
+import { FileProvider } from './context/FileContext'
+import { LanguageProvider } from './context/LanguageContext'
+import { ThemeProvider } from './context/ThemeContext'
 import './styles/editor.css'
 
 function App() {
   return (
-    <div className="w-screen h-screen overflow-hidden bg-[#1e1e1e] text-white">
-      <VSCodeLayout />
-    </div>
+    <LanguageProvider>
+      <FileProvider>
+        <ThemeProvider>
+          <div className="h-screen">
+            <VSCodeLayout />
+          </div>
+        </ThemeProvider>
+      </FileProvider>
+    </LanguageProvider>
   )
 }
 
