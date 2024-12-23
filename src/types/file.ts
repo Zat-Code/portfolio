@@ -12,6 +12,8 @@ export interface IFile {
 export interface FileContextType {
   files: IFile[];
   activeFile: IFile | null;
-  setActiveFile: (file: IFile) => void;
+  setActiveFile: (file: IFile | null) => void;
+  openedFiles: IFile[];
+  closeFile: (fileId: string) => void;
   currentLanguage: string;
 } 

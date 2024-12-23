@@ -133,19 +133,35 @@ export default function Counter() {
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
 export function FileProvider({ children }: { children: ReactNode }) {
-  const [files] = useState<IFile[]>(initialFiles);
-  const [activeFile, setActiveFile] = useState<IFile | null>(null);
   const { language } = useLanguage();
+  const [files, setFiles] = useState<IFile[]>(initialFiles);
+  const [activeFile, setActiveFile] = useState<IFile | null>(null);
+  const [openedFiles, setOpenedFiles] = useState<IFile[]>([]);
+
+  const handleSetActiveFile = (file: IFile | null) => {
+    setActiveFile(file);
+    if (file && !openedFiles.find(f => f.id === file.id)) {
+      setOpenedFiles([...openedFiles, file]);
+    }
+  };
+
+  const closeFile = (fileId: string) => {
+    setOpenedFiles(openedFiles.filter(f => f.id !== fileId));
+    if (activeFile?.id === fileId) {
+      const remainingFiles = openedFiles.filter(f => f.id !== fileId);
+      setActiveFile(remainingFiles.length > 0 ? remainingFiles[remainingFiles.length - 1] : null);
+    }
+  };
 
   return (
-    <FileContext.Provider 
-      value={{ 
-        files, 
-        activeFile, 
-        setActiveFile,
-        currentLanguage: language 
-      }}
-    >
+    <FileContext.Provider value={{
+      files,
+      activeFile,
+      setActiveFile: handleSetActiveFile,
+      openedFiles,
+      closeFile,
+      currentLanguage: language
+    }}>
       {children}
     </FileContext.Provider>
   );

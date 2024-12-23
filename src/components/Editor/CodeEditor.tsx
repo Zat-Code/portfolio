@@ -141,6 +141,8 @@ interface CodeEditorProps {
 const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps) => {
   const codeRef = useRef<HTMLElement>(null);
   const [activeLine, setActiveLine] = useState(1);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [showCursor, setShowCursor] = useState(false);
   const lines = code.split('\n');
 
   const getNormalizedLanguage = (lang: string) => {
@@ -166,22 +168,41 @@ const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps)
     }
   }, [code, language]);
 
-  // Ajout de la gestion du clic pour la position du curseur
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relativeY = e.clientY - rect.top;
+    const relativeX = e.clientX - rect.left;
+    const lineHeight = 24; // hauteur de ligne en pixels
+    const charWidth = 8.5; // Ajusté pour une meilleure précision
+    
+    const line = Math.floor(relativeY / lineHeight) + 1;
+    const column = Math.floor(relativeX / charWidth) + 1;
+    
+    setCursorPosition({
+      x: Math.floor(relativeX / charWidth) * charWidth + 4, // Ajout d'un offset
+      y: Math.floor(relativeY / lineHeight) * lineHeight
+    });
+    
+    setShowCursor(true);
+
     if (onCursorPositionChange) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const relativeY = e.clientY - rect.top;
-      const lineHeight = 24; // hauteur de ligne en pixels
-      const line = Math.floor(relativeY / lineHeight) + 1;
-      
-      // Calcul approximatif de la colonne basé sur la position X
-      const relativeX = e.clientX - rect.left;
-      const charWidth = 8; // largeur moyenne d'un caractère en pixels
-      const column = Math.floor(relativeX / charWidth) + 1;
-      
       onCursorPositionChange({ line, column });
     }
   };
+
+  // Effet pour faire clignoter le curseur
+  useEffect(() => {
+    if (!showCursor) return;
+
+    const interval = setInterval(() => {
+      const cursor = document.getElementById('editor-cursor');
+      if (cursor) {
+        cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+      }
+    }, 530); // Vitesse de clignotement
+
+    return () => clearInterval(interval);
+  }, [showCursor]);
 
   return (
     <div className="relative flex h-full">
@@ -190,7 +211,7 @@ const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps)
         {lines.map((_, index) => (
           <div 
             key={index + 1}
-            className={`leading-6 ${
+            className={`h-6 leading-6 ${
               activeLine === index + 1 ? 'text-white' : ''
             }`}
           >
@@ -201,16 +222,36 @@ const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps)
 
       {/* Code avec highlight */}
       <div className="relative flex-1 overflow-auto">
+        {/* Ligne active highlight */}
         <div 
           className="absolute w-full h-6 bg-[#282828] -z-10"
           style={{ top: `${(activeLine - 1) * 24}px` }}
         />
         
+        {/* Curseur */}
+        {showCursor && (
+          <div
+            id="editor-cursor"
+            className="absolute w-[1.5px] h-[18px] bg-white/80 transition-opacity duration-100"
+            style={{
+              left: `${cursorPosition.x}px`,
+              top: `${cursorPosition.y + 3}px`
+            }}
+          />
+        )}
+        
         <pre className="h-full">
           <code
             ref={codeRef}
-            className={`language-${getNormalizedLanguage(language)}`}
+            className={`language-${getNormalizedLanguage(language)} block leading-6`}
             onClick={handleClick}
+            style={{
+              padding: '0px',
+              fontFamily: 'Consolas, Monaco, monospace',
+              fontSize: '14px',
+              lineHeight: '24px',
+              tabSize: 2
+            }}
             onMouseMove={(e) => {
               const lineHeight = 24;
               const rect = e.currentTarget.getBoundingClientRect();
