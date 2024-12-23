@@ -6,14 +6,18 @@ import {
   VscChevronDown, 
   VscFolder, 
   VscJson, 
-  VscFile 
+  VscFile,
+  VscReact,
+  VscSettingsGear,
+  VscSymbolNamespace
 } from 'react-icons/vsc';
 import { 
   SiReact, 
   SiTypescript,
   SiJavascript,
   SiCss3,
-  SiHtml5
+  SiHtml5,
+  SiPython
 } from 'react-icons/si';
 
 interface SidebarProps {
@@ -28,7 +32,9 @@ const getFileIcon = (fileName: string) => {
   if (fileName.endsWith('.css')) return <SiCss3 className="text-[#264de4]" />;
   if (fileName.endsWith('.html')) return <SiHtml5 className="text-[#e34f26]" />;
   if (fileName.endsWith('.json')) return <VscJson className="text-[#faa43a]" />;
-  return <VscFile />;
+  if (fileName.endsWith('.py')) return <SiPython className="text-yellow-300" />;
+  if (fileName === 'settings.json') return <VscSettingsGear className="text-white/80" />;
+  return <VscSymbolNamespace className="text-white/80" />;
 };
 
 const Sidebar = ({ width = 300, onWidthChange }: SidebarProps) => {
