@@ -210,16 +210,16 @@ const ExperiencePreview = () => {
                   <div className="rounded-lg p-6 border-2 border-[#007acc] space-y-8 hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] transition-all hover:scale-[1.02]">
                     <div className="group cursor-default">
                       <h3 className="text-xl font-medium mb-3 text-white/90 flex items-center gap-2 group-hover:text-white transition-colors">
-                        {language === 'fr' ? "Référent Technique" : "Technical Lead"}
-                        <span className="text-xs text-[#007acc]/60 group-hover:text-[#007acc] transition-colors">
-                          {language === 'fr' ? "(aka Le Jedi du Code)" : "(aka The Code Jedi)"}
+                        Agreenculture
+                        <span className="text-sm text-[#007acc]/60 group-hover:text-[#007acc] transition-colors">
+                          03/2019 - 10/2024
                         </span>
                       </h3>
-                      <p className="text-white/70 mb-2">
+                      <div className="text-white/70 mb-4">
                         {language === 'fr' 
-                          ? "Référent technique sur les choix d'architecture et les orientations technologiques, guidant une équipe de développeurs dans l'implémentation des meilleures pratiques et standards de développement"
-                          : "Technical reference for architecture choices and technological orientations, guiding a team of developers in implementing best practices and development standards"}
-                      </p>
+                          ? "Full stack Engineer / Computer vision"
+                          : "Full stack Engineer / Computer vision"}
+                      </div>
                     </div>
 
                     <div className="group cursor-default">
