@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { VscScreenFull } from 'react-icons/vsc';
-import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import { SiLinkedin } from 'react-icons/si';
 import { VscGithubInverted } from 'react-icons/vsc';
 

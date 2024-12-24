@@ -1,12 +1,22 @@
 import { useLanguage } from '../../../context/LanguageContext';
-import { SiPython, SiReact, SiAngular, SiVuedotjs, SiD3Dotjs, SiLeaflet, SiFigma, SiFlask, SiDjango, SiNodedotjs, SiAdonisjs, SiMongodb, SiPostgresql, SiPrisma, SiTensorflow, SiPytorch, SiOpencv, SiScikitlearn, SiDocker, SiNginx, SiKubernetes, SiKong, SiGitlab } from 'react-icons/si';
+import { SiReact, SiAngular, SiVuedotjs, SiLeaflet, SiFigma, SiFlask, SiDjango, SiNodedotjs, SiAdonisjs, SiMongodb, SiPostgresql, SiPrisma, SiTensorflow, SiPytorch, SiOpencv, SiScikitlearn, SiDocker, SiNginx, SiKubernetes, SiKong, SiGitlab } from 'react-icons/si';
 import { VscGraph, VscSymbolClass, VscMortarBoard, VscCode, VscTools } from 'react-icons/vsc';
 import { BsPersonVcard } from 'react-icons/bs';
+
+interface Quote {
+  text: string;
+  author: string;
+}
+
+interface QuotesType {
+  fr: Quote[];
+  en: Quote[];
+}
 
 const ExperiencePreview = () => {
   const { language } = useLanguage();
 
-  const quotes = {
+  const quotes: QuotesType = {
     fr: [
       {
         text: "Un bon développeur est un développeur fainéant (qui automatise tout)",
@@ -172,7 +182,7 @@ const ExperiencePreview = () => {
                     <span className="group-hover:translate-x-1 transition-transform">Philosophies</span>
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {quotes[language].map((quote, index) => (
+                    {quotes[language as keyof QuotesType].map((quote: Quote, index: number) => (
                       <div 
                         key={index}
                         className="relative p-6 rounded-lg border-2 border-[#007acc] group hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] transition-all hover:-translate-y-1"

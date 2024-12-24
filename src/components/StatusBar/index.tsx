@@ -2,7 +2,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { VscSourceControl, VscError, VscWarning, VscBell, VscFeedback, VscRemote } from 'react-icons/vsc';
 
 const StatusBar = () => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className="h-6 bg-[#1e1e1e] text-white/80 text-xs flex items-center justify-between border-t border-[#333]">

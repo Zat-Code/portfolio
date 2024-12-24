@@ -24,12 +24,22 @@ const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayou
     setIsSidebarOpen(false);
     setIsTerminalOpen(false);
     closeInterface();
+    onClose();
+  };
+
+  const handleTerminalToggle = () => {
+    setIsTerminalOpen(!isTerminalOpen);
   };
 
   if (!isInterfaceOpen) {
     return (
       <div className="h-screen flex flex-col bg-[#1e1e1e] text-white">
-        <MenuBar onClose={handleClose} onTerminalToggle={() => {}} />
+        <MenuBar 
+          onClose={handleClose} 
+          onTerminalToggle={handleTerminalToggle}
+          onFullScreenToggle={onFullScreenToggle}
+          isFullScreen={isFullScreen}
+        />
         <div className="flex-1 flex items-center justify-center">
           <button
             onClick={openInterface}
@@ -64,8 +74,8 @@ const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayou
       {/* MenuBar desktop */}
       <div className="hidden lg:block">
         <MenuBar 
-          onTerminalToggle={() => setIsTerminalOpen(!isTerminalOpen)} 
-          onClose={handleClose}
+          onClose={handleClose} 
+          onTerminalToggle={handleTerminalToggle}
           onFullScreenToggle={onFullScreenToggle}
           isFullScreen={isFullScreen}
         />

@@ -14,7 +14,7 @@ interface MenuBarProps {
   isFullScreen: boolean;
 }
 
-const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenToggle, isFullScreen }: MenuBarProps) => {
+const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenToggle }: MenuBarProps) => {
   const { t } = useLanguage();
   const menuItems = [
     t('menu.file'),

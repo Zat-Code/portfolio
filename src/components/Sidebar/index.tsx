@@ -6,8 +6,6 @@ import {
   VscChevronDown, 
   VscFolder, 
   VscJson, 
-  VscFile,
-  VscReact,
   VscSettingsGear,
   VscSymbolNamespace
 } from 'react-icons/vsc';

@@ -1,5 +1,6 @@
 import { VscClose, VscChevronDown } from 'react-icons/vsc';
 import { useFiles } from '../../context/FileContext';
+import { IFile } from '../../types/file';
 
 interface TabProps {
   file: IFile;

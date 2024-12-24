@@ -7,6 +7,7 @@ export interface IFile {
   };
   language: string;
   icon?: string;
+  isSettings?: boolean;
 }
 
 export interface FileContextType {

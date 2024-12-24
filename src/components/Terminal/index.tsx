@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { VscClose, VscAdd, VscChevronDown } from 'react-icons/vsc';
 import { useFiles } from '../../context/FileContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { IFile } from '../../types/file';
 
 interface TerminalLine {
   content: string;
@@ -52,7 +53,7 @@ Tux winks at you! 🐧`;
         if (args.length < 2) return 'Usage: cat <filename>';
         const file = files.find(f => f.name === args[1]);
         if (!file) return `File not found: ${args[1]}`;
-        return file.content[language];
+        return getFileContent(file);
       
       case 'pwd':
         return '/portfolio';
@@ -194,6 +195,10 @@ Examples:
 
     return () => clearInterval(interval);
   }, []);
+
+  const getFileContent = (file: IFile): string => {
+    return file.content[language as keyof typeof file.content] || '';
+  };
 
   return (
     <div 

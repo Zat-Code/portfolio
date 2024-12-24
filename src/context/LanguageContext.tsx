@@ -1,6 +1,14 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { Language, LanguageContextType } from '../types/language';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { translations } from '../locales/translations';
+
+type Language = 'fr' | 'en';
+type TranslationKey = keyof typeof translations.fr | keyof typeof translations.en;
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: TranslationKey) => string;
+}
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
@@ -25,8 +33,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('preferred-language', language);
   }, [language]);
 
-  const t = (key: string): string => {
-    return translations[language][key] || key;
+  const t = (key: TranslationKey): string => {
+    return translations[language][key as keyof typeof translations.fr] || key;
   };
 
   return (

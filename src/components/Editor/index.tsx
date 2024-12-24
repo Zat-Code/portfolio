@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFiles } from '../../context/FileContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { IFile } from '../../types/file';
 import CodeEditor from './CodeEditor';
 import HomePreview from './previews/HomePreview';
 import SettingsEditor from './SettingsEditor';
@@ -19,6 +20,10 @@ const Editor = () => {
     'experience.py': true,
     'personal_project.md': true
   });
+
+  const getFileContent = (file: IFile): string => {
+    return file.content?.[language as keyof typeof file.content] || '';
+  };
 
   const isPreviewMode = (fileName: string) => {
     if (fileName === 'home.tsx') return true;
@@ -94,7 +99,7 @@ const Editor = () => {
                     <PersonalProjectPreview />
                   ) : (
                     <CodeEditor 
-                      code={activeFile.content ? activeFile.content[language] : ''} 
+                      code={getFileContent(activeFile)} 
                       language={activeFile.language}
                       onCursorPositionChange={() => {}}
                     />
@@ -102,7 +107,7 @@ const Editor = () => {
                 </div>
               ) : (
                 <CodeEditor 
-                  code={activeFile.content ? activeFile.content[language] : ''} 
+                  code={getFileContent(activeFile)} 
                   language={activeFile.language}
                   onCursorPositionChange={() => {}}
                 />
