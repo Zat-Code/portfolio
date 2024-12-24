@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { VscScreenFull } from 'react-icons/vsc';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { SiLinkedin } from 'react-icons/si';
+import { VscGithubInverted } from 'react-icons/vsc';
 
 const HomePreview = () => {
   const { language } = useLanguage();
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsFullScreen(!!document.fullscreenElement);
@@ -14,6 +18,30 @@ const HomePreview = () => {
     };
     document.addEventListener('fullscreenchange', handleFullScreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullScreenChange);
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!photoRef.current || !containerRef.current) return;
+      
+      const { width, height } = containerRef.current.getBoundingClientRect();
+      const x = (e.clientX / width - 0.5) * 2; // Normalisation entre -1 et 1
+      const y = (e.clientY / height - 0.5) * 2;
+      
+      const rotateX = -y * 10; // Rotation maximale réduite à 10 degrés
+      const rotateY = x * 10;
+      const scale = 1.05; // Scale réduit pour un effet plus subtil
+      
+      photoRef.current.style.transform = `
+        perspective(1000px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        scale(${scale})
+      `;
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
   }, []);
 
   const handleFullScreen = async () => {
@@ -27,42 +55,56 @@ const HomePreview = () => {
   };
 
   return (
-    <div className="h-full overflow-y-auto p-2 sm:p-4 bg-[#1e1e1e] text-white">
+    <div 
+      ref={containerRef}
+      className="h-full overflow-y-auto p-2 sm:p-4 bg-[#1e1e1e] text-white"
+    >
       <div className="min-h-full flex items-center">
         <div className="w-full max-w-5xl mx-auto">
-          <div className="relative">
+          <div className="relative animate-fade-in">
             <div className="relative bg-[#1e1e1e] rounded-lg p-3 sm:p-5 space-y-4 sm:space-y-6 border-2 border-[#007acc]">
               {/* Photo et informations */}
               <div className="flex flex-col items-center md:items-start md:flex-row gap-4 sm:gap-5">
-                <div className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-[#007acc] flex-shrink-0">
-                  <img src="/benjamin-theytaz.png" alt="Benjamin THEYTAZ" className="w-full h-full object-cover" />
+                <div 
+                  ref={photoRef}
+                  className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-[#007acc] flex-shrink-0 transition-all duration-300 ease-out"
+                >
+                  <img 
+                    src="/benjamin-theytaz.png" 
+                    alt="Benjamin THEYTAZ" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="space-y-2 sm:space-y-3 text-center md:text-left">
+                <div className="space-y-2 sm:space-y-3 text-center md:text-left animate-slide-in-right">
                   <h1 className="text-2xl sm:text-4xl font-bold text-white/90">Benjamin THEYTAZ</h1>
                   <h2 className="text-xl sm:text-2xl text-[#007acc]">Full Stack Engineer</h2>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
-                    <a href="mailto:benjamin.theytaz@hotmail.fr" className="hover:text-[#007acc] transition-colors break-all">
+                    <a 
+                      href="mailto:benjamin.theytaz@hotmail.fr" 
+                      className="hover:text-[#007acc] transition-colors break-all hover:scale-105 transform"
+                    >
                       benjamin.theytaz@hotmail.fr
                     </a>
+                    <span className="hidden sm:inline text-white/40">|</span>
                     <div className="flex items-center gap-4">
                       <a 
                         href="https://www.linkedin.com/in/benjamin-theytaz" 
                         target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="hover:text-[#007acc] transition-colors flex items-center gap-1"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
                       >
-                        <FaLinkedin className="text-xl" />
+                        <SiLinkedin className="text-xl animate-bounce-1" />
                         <span>/benjamin-theytaz</span>
                       </a>
                       <span className="hidden sm:inline text-white/40">|</span>
                       <a 
                         href="https://github.com/Zat-Code" 
                         target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="hover:text-[#007acc] transition-colors flex items-center gap-1"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
                       >
-                        <FaGithub className="text-xl" />
-                        <span>/Zat-Code</span>
+                        <VscGithubInverted className="text-xl animate-bounce-2" />
+                        <span>@Zat-Code</span>
                       </a>
                     </div>
                   </div>
@@ -70,7 +112,7 @@ const HomePreview = () => {
               </div>
 
               {/* Message de bienvenue */}
-              <div className="space-y-2 sm:space-y-3 text-sm sm:text-base">
+              <div className="space-y-2 sm:space-y-3 text-sm sm:text-base animate-fade-in-up">
                 <h2 className="text-xl sm:text-2xl text-[#007acc]">
                   {language === 'fr' ? "Bienvenue sur mon portfolio VS Code !" : "Welcome to my VS Code portfolio!"}
                 </h2>
