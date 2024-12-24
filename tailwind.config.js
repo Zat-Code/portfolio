@@ -19,6 +19,7 @@ export default {
         'energy-core': 'energyCore 2s ease-in-out infinite',
         'electric-1': 'electric1 3s linear infinite',
         'electric-2': 'electric2 2.5s linear infinite',
+        'fade-slide-up': 'fade-slide-up 0.5s ease-out forwards'
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -86,6 +87,16 @@ export default {
           '100%': { 
             transform: 'rotate(-360deg)',
             opacity: '0.4'
+          }
+        },
+        'fade-slide-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
           }
         }
       },

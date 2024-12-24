@@ -79,33 +79,38 @@ const HomePreview = () => {
                   <h1 className="text-2xl sm:text-4xl font-bold text-white/90">Benjamin THEYTAZ</h1>
                   <h2 className="text-xl sm:text-2xl text-[#007acc]">Full Stack Engineer</h2>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
-                    <a 
-                      href="mailto:benjamin.theytaz@hotmail.fr" 
-                      className="hover:text-[#007acc] transition-colors break-all hover:scale-105 transform"
-                    >
-                      benjamin.theytaz@hotmail.fr
-                    </a>
-                    <span className="hidden sm:inline text-white/40">|</span>
-                    <div className="flex items-center gap-4">
-                      <a 
-                        href="https://www.linkedin.com/in/benjamin-theytaz" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
-                      >
-                        <SiLinkedin className="text-xl animate-bounce-1" />
-                        <span>/benjamin-theytaz</span>
-                      </a>
-                      <span className="hidden sm:inline text-white/40">|</span>
-                      <a 
-                        href="https://github.com/Zat-Code" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
-                      >
-                        <VscGithubInverted className="text-xl animate-bounce-2" />
-                        <span>@Zat-Code</span>
-                      </a>
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <a 
+                          href="mailto:benjamin.theytaz@hotmail.fr" 
+                          className="hover:text-[#007acc] transition-colors break-all hover:scale-105 transform"
+                        >
+                          benjamin.theytaz@hotmail.fr
+                        </a>
+                        <span className="hidden sm:inline text-white/40">|</span>
+                        <div className="flex items-center gap-4">
+                          <a 
+                            href="https://www.linkedin.com/in/benjamin-theytaz" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
+                          >
+                            <SiLinkedin className="text-xl animate-bounce-1" />
+                            <span>/benjamin-theytaz</span>
+                          </a>
+                          <span className="hidden sm:inline text-white/40">|</span>
+                          <a 
+                            href="https://github.com/Zat-Code" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-white/80 hover:text-[#007acc] transition-all hover:scale-105"
+                          >
+                            <VscGithubInverted className="text-xl animate-bounce-2" />
+                            <span>@Zat-Code</span>
+                          </a>
+                        </div>
+                      </div>
+                      {/* Le bouton d'édition sera ajouté ici par le composant parent */}
                     </div>
                   </div>
                 </div>

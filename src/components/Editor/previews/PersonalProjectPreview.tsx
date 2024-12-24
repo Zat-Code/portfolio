@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
-import { SiReact, SiTailwindcss, SiPython, SiGithub, SiVuedotjs, SiDocker, SiVercel, SiOpencv } from 'react-icons/si';
-import { VscGraph } from 'react-icons/vsc';
-import { FaGamepad, FaGhost, FaExternalLinkAlt } from 'react-icons/fa';
+import { VscCode, VscGraph } from 'react-icons/vsc';
+import { SiReact, SiTailwindcss, SiPython, SiVuedotjs, SiDocker, SiVercel, SiOpencv, SiGithub } from 'react-icons/si';
+import { FaGhost, FaExternalLinkAlt } from 'react-icons/fa';
 import { AiOutlineThunderbolt } from 'react-icons/ai';
 import { TbPlugConnected } from 'react-icons/tb';
 import { GiSpiderWeb } from 'react-icons/gi';
@@ -9,7 +10,29 @@ import { GiSpiderWeb } from 'react-icons/gi';
 const PersonalProjectPreview = () => {
   const { language } = useLanguage();
 
-  const renderProject = (
+  useEffect(() => {
+    const keyframes = `
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    const style = document.createElement('style');
+    style.innerHTML = keyframes;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  const renderProjectContent = (
     title: string,
     subtitle: string,
     description: string,
@@ -18,72 +41,74 @@ const PersonalProjectPreview = () => {
     links?: { github?: string; website?: string },
     gif?: string
   ) => (
-    <div className="p-6 rounded-lg border-2 border-[#007acc] group hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] transition-all hover:scale-105">
-      <div className="flex items-start gap-4">
-        <div className="flex-1">
-          <div className="flex items-start gap-4">
-            <div className="text-3xl text-[#007acc] group-hover:scale-125 transition-transform duration-300">
-              {icon}
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-medium text-white/90 mb-1 group-hover:text-white transition-colors">{title}</h3>
-              <div className="text-sm text-[#007acc]/80 italic mb-3 group-hover:text-[#007acc] transition-colors">{subtitle}</div>
-              <p className="text-white/70 mb-4 group-hover:text-white/80 transition-colors">{description}</p>
-              {details}
-              {links && (
-                <div className="flex gap-4 mt-4">
-                  {links.github && (
-                    <a 
-                      href={links.github} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-white/60 hover:text-white/90 transition-all hover:scale-110 hover:-translate-y-1"
-                    >
-                      <SiGithub className="animate-bounce-1" />
-                      GitHub
-                    </a>
-                  )}
-                  {links.website && (
-                    <a 
-                      href={links.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-white/60 hover:text-white/90 transition-all hover:scale-110 hover:-translate-y-1"
-                    >
-                      <FaExternalLinkAlt className="animate-bounce-2" />
-                      Website
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
+    <div className="flex items-start gap-4">
+      <div className="flex-1">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl text-[#007acc] transition-transform duration-300">
+            {icon}
+          </div>
+          <div className="flex-1">
+            <h3 className="text-xl font-medium text-white/90 mb-1 transition-colors">{title}</h3>
+            <div className="text-sm text-[#007acc]/80 italic mb-3 transition-colors">{subtitle}</div>
+            <p className="text-white/70 mb-4 transition-colors">{description}</p>
+            {details}
+            {links && (
+              <div className="flex gap-4 mt-4">
+                {links.github && (
+                  <a 
+                    href={links.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white/60 hover:text-white/90 transition-all hover:scale-110 hover:-translate-y-1"
+                  >
+                    <SiGithub className="animate-bounce-1" />
+                    GitHub
+                  </a>
+                )}
+                {links.website && (
+                  <a 
+                    href={links.website} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white/60 hover:text-white/90 transition-all hover:scale-110 hover:-translate-y-1"
+                  >
+                    <FaExternalLinkAlt className="animate-bounce-2" />
+                    Website
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
-        {gif && (
-          <div className="hidden md:block w-48 h-48 rounded-lg overflow-hidden border-2 border-[#007acc]/20 group-hover:border-[#007acc]/40 transition-colors">
-            <img src={gif} alt={title} className="w-full h-full object-cover" />
-          </div>
-        )}
       </div>
+      {gif && (
+        <div className="hidden md:block w-48 h-48 rounded-lg overflow-hidden border-2 border-[#007acc]/20 transition-colors">
+          <img src={gif} alt={title} className="w-full h-full object-cover" />
+        </div>
+      )}
     </div>
   );
 
   return (
-    <div className="h-full overflow-y-auto p-2 sm:p-4 bg-[#1e1e1e] text-white">
-      <div className="min-h-full flex items-center">
-        <div className="w-full max-w-5xl mx-auto">
-          <div className="relative animate-fade-in">
-            <div className="relative bg-[#1e1e1e] rounded-lg p-3 sm:p-5 space-y-4 sm:space-y-6">
-              <div className="max-w-5xl mx-auto space-y-6">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white/90 mb-6 sm:mb-8 group cursor-default animate-fade-in flex items-center gap-2">
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    {language === 'fr' ? 'Projets Personnels' : 'Personal Projects'}
-                  </span>
-                </h1>
+    <div className="h-full overflow-y-auto bg-[#1e1e1e] text-white">
+      <div className="min-h-full py-4">
+        <div className="w-full max-w-4xl mx-auto px-4">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl text-[#007acc] flex items-center gap-2 group cursor-default">
+                <VscCode className="group-hover:scale-110 transition-transform" />
+                <span className="group-hover:translate-x-1 transition-transform">
+                  {language === 'fr' ? 'Projets Personnels' : 'Personal Projects'}
+                </span>
+              </h2>
+            </div>
 
-                {/* DataStrike */}
-                <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
-                  {renderProject(
+            {/* Projects */}
+            <div className="space-y-6">
+              {/* DataStrike */}
+              <div className="animate-fade-in opacity-0 [animation-delay:100ms] [animation-fill-mode:forwards]">
+                <div className="group rounded-lg border-2 border-[#007acc] hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] p-6 transform transition-all duration-300 hover:scale-[1.05]">
+                  {renderProjectContent(
                     'DataStrike (2024)',
                     language === 'fr' ? 'Le Sherlock Holmes des Matchs Overwatch 🔍' : 'The Overwatch Match Detective 🔍',
                     language === 'fr' 
@@ -114,10 +139,12 @@ const PersonalProjectPreview = () => {
                     '/datastrike.gif'
                   )}
                 </div>
+              </div>
 
-                {/* Halloween Mission */}
-                <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-                  {renderProject(
+              {/* Halloween Mission */}
+              <div className="animate-fade-in opacity-0 [animation-delay:250ms] [animation-fill-mode:forwards]">
+                <div className="group rounded-lg border-2 border-[#007acc] hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] p-6 transform transition-all duration-300 hover:scale-[1.05]">
+                  {renderProjectContent(
                     'Halloween Mission AGC (2022)',
                     language === 'fr' ? 'Le Site qui fait Peur... aux Développeurs Front-end 👻' : 'The Website that Scares... Front-end Developers 👻',
                     language === 'fr'
@@ -145,10 +172,12 @@ const PersonalProjectPreview = () => {
                     '/halloween.gif'
                   )}
                 </div>
+              </div>
 
-                {/* CodinGame Challenge */}
-                <div className="animate-fade-in" style={{ animationDelay: '300ms' }}>
-                  {renderProject(
+              {/* CodinGame Challenge */}
+              <div className="animate-fade-in opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards]">
+                <div className="group rounded-lg border-2 border-[#007acc] hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] p-6 transform transition-all duration-300 hover:scale-[1.05]">
+                  {renderProjectContent(
                     'CodinGame Spring Challenge 2022',
                     language === 'fr' ? "L'Art de la Guerre avec des Monstres 🎮" : 'The Art of Monster Warfare 🎮',
                     language === 'fr'

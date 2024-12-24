@@ -150,10 +150,13 @@ const ExperiencePreview = () => {
             <div className="relative bg-[#1e1e1e] rounded-lg p-3 sm:p-5 space-y-4 sm:space-y-6 ">
               <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
                 <div className="space-y-4 animate-fade-in">
-                  <h2 className="text-2xl text-[#007acc] flex items-center gap-2 group cursor-default">
-                    <BsPersonVcard className="group-hover:scale-110 transition-transform" />
-                    <span className="group-hover:translate-x-1 transition-transform">Description</span>
-                  </h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl text-[#007acc] flex items-center gap-2 group cursor-default">
+                      <BsPersonVcard className="group-hover:scale-110 transition-transform" />
+                      <span className="group-hover:translate-x-1 transition-transform">Description</span>
+                    </h2>
+                    {/* Le bouton d'édition sera ajouté ici par le composant parent */}
+                  </div>
                   <div className="rounded-lg p-4 sm:p-6 border-2 border-[#007acc] hover:border-[#007acc] transition-all group hover:shadow-[0_0_15px_rgba(0,122,204,0.1)] hover:scale-105">
                     <p className="text-white/80 text-base sm:text-lg leading-relaxed group-hover:text-white/90 transition-colors">
                       {language === 'fr'
