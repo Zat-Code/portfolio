@@ -17,14 +17,15 @@ import SourceControlSidebar from '../components/SourceControlSidebar';
 
 interface VSCodeLayoutProps {
   onClose: () => void;
+  onFullScreenToggle: () => void;
+  isFullScreen: boolean;
 }
 
-const VSCodeLayoutContent = ({ onClose }: VSCodeLayoutProps) => {
+const VSCodeLayoutContent = ({ onClose, onFullScreenToggle, isFullScreen }: VSCodeLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isExtensionsOpen, setIsExtensionsOpen] = useState(false);
   const [isSourceControlOpen, setIsSourceControlOpen] = useState(false);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(300);
   const [extensionsWidth, setExtensionsWidth] = useState(300);
@@ -47,7 +48,7 @@ const VSCodeLayoutContent = ({ onClose }: VSCodeLayoutProps) => {
     } else {
       document.exitFullscreen();
     }
-    setIsFullScreen(!isFullScreen);
+    onFullScreenToggle();
   };
 
   const handleMinimize = () => {
@@ -170,7 +171,7 @@ const VSCodeLayoutContent = ({ onClose }: VSCodeLayoutProps) => {
       
       {isExtensionInstalled('guitar-player') && (
         <div className="flex-none">
-          <AudioPlayer onClose={() => uninstallExtension('guitar-player')} />
+          <AudioPlayer />
         </div>
       )}
       

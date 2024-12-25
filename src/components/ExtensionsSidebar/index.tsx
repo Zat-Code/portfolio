@@ -29,8 +29,8 @@ const ExtensionsSidebar = ({ width = 300, onWidthChange }: ExtensionsSidebarProp
       id: 'guitar-player',
       name: 'Guitar Player',
       description: language === 'fr' 
-        ? '🎸 Transformez votre IDE en scène de concert ! Écoutez mes riffs de guitare pendant que vous codez comme une rock star. Bonus : Peut transformer mystérieusement vos bugs en solos de guitare endiablés !'
-        : '🎸 Transform your IDE into a concert stage! Listen to my guitar riffs while coding like a rock star. Bonus: Can mysteriously transform your bugs into wild guitar solos!',
+        ? '🎸 Transformez votre IDE en scène de concert ! Écoutez mes riffs de guitare pendant que vous codez comme une rock star.'
+        : '🎸 Transform your IDE into a concert stage! Listen to my guitar riffs while coding like a rock star.',
       icon: <GiGuitar className="text-[#1db954]" />,
       author: 'Zat',
       downloads: '13',

@@ -89,7 +89,7 @@ const Tetris = ({ onClose }: TetrisProps) => {
       setPosition(prev => ({ ...prev, y: prev.y + 1 }));
     } else {
       mergePiece();
-      const newBoard = clearLines();
+      clearLines();
       if (position.y === 0) {
         setGameOver(true);
       } else {

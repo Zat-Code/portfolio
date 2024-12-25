@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { VscSourceControl, VscGitCommit, VscSync, VscCloudUpload } from 'react-icons/vsc';
+import { VscGitCommit, VscSync, VscCloudUpload } from 'react-icons/vsc';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface SourceControlSidebarProps {

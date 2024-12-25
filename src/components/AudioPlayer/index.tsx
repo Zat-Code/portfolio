@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { IoPlaySkipBack, IoPlaySkipForward, IoPlay, IoPause } from 'react-icons/io5';
 import { VscMute, VscUnmute } from 'react-icons/vsc';
-import { useLanguage } from '../../context/LanguageContext';
 
 interface Song {
   id: string;
@@ -12,12 +11,7 @@ interface Song {
   cover: string;
 }
 
-interface AudioPlayerProps {
-  onClose: () => void;
-}
-
-const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
-  const { language } = useLanguage();
+const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -28,13 +22,13 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
 
   const songs: Song[] = [
     {
-        id: '1',
-        title: 'The Last of Us',
-        artist: 'Zat',
-        duration: '2:30',
-        url: '/audio/the-last-of-us.mp3',
-        cover: '/audio/covers/the-last-of-us.svg'
-      },
+      id: '1',
+      title: 'The Last of Us',
+      artist: 'Zat',
+      duration: '2:30',
+      url: '/audio/the-last-of-us.mp3',
+      cover: '/audio/covers/the-last-of-us.svg'
+    },
     {
       id: '2',
       title: 'Feel Good Inc',
@@ -43,7 +37,6 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
       url: '/audio/feel-good-inc.mp3',
       cover: '/audio/covers/feel-good.jpg'
     },
-
     {
       id: '3',
       title: 'Just the Two of Us',
