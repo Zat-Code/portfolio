@@ -1,28 +1,39 @@
 import { useState } from 'react';
-import MenuBar from '../components/MenuBar';
 import ActivityBar from '../components/ActivityBar';
 import Sidebar from '../components/Sidebar';
+import ExtensionsSidebar from '../components/ExtensionsSidebar';
+import TabsBar from '../components/TabsBar';
 import Editor from '../components/Editor';
 import StatusBar from '../components/StatusBar';
+import MenuBar from '../components/MenuBar';
 import Terminal from '../components/Terminal';
-import { VscMenu, VscFolderOpened } from 'react-icons/vsc';
+import WindowsXP from '../components/WindowsXP';
+import PenguinConfetti from '../components/PenguinConfetti';
+import AudioPlayer from '../components/AudioPlayer';
+import { ExtensionsProvider, useExtensions } from '../context/ExtensionsContext';
 import { useFiles } from '../context/FileContext';
+import { VscFolderOpened } from 'react-icons/vsc';
+import SourceControlSidebar from '../components/SourceControlSidebar';
 
 interface VSCodeLayoutProps {
-  onFullScreenToggle: () => void;
   onClose: () => void;
+  onFullScreenToggle: () => void;
   isFullScreen: boolean;
 }
 
-const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayoutProps) => {
+const VSCodeLayoutContent = ({ onClose, onFullScreenToggle, isFullScreen }: VSCodeLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [sidebarWidth, setSidebarWidth] = useState(300);
+  const [isExtensionsOpen, setIsExtensionsOpen] = useState(false);
+  const [isSourceControlOpen, setIsSourceControlOpen] = useState(false);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(300);
+  const [extensionsWidth, setExtensionsWidth] = useState(300);
+  const [sourceControlWidth, setSourceControlWidth] = useState(300);
+  const { isExtensionInstalled } = useExtensions();
   const { isInterfaceOpen, openInterface, closeInterface } = useFiles();
 
   const handleClose = () => {
-    setIsSidebarOpen(false);
-    setIsTerminalOpen(false);
     closeInterface();
     onClose();
   };
@@ -31,13 +42,53 @@ const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayou
     setIsTerminalOpen(!isTerminalOpen);
   };
 
+  const handleFullScreenToggle = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+    onFullScreenToggle();
+  };
+
+  const handleMinimize = () => {
+    setIsMinimized(true);
+  };
+
+  const handleRestore = () => {
+    setIsMinimized(false);
+  };
+
+  const handleSidebarToggle = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    setIsExtensionsOpen(false);
+    setIsSourceControlOpen(false);
+  };
+
+  const handleExtensionsToggle = () => {
+    setIsExtensionsOpen(!isExtensionsOpen);
+    setIsSidebarOpen(false);
+    setIsSourceControlOpen(false);
+  };
+
+  const handleSourceControlToggle = () => {
+    setIsSourceControlOpen(!isSourceControlOpen);
+    setIsSidebarOpen(false);
+    setIsExtensionsOpen(false);
+  };
+
+  if (isMinimized) {
+    return <WindowsXP onRestore={handleRestore} />;
+  }
+
   if (!isInterfaceOpen) {
     return (
-      <div className="h-screen flex flex-col bg-[#1e1e1e] text-white">
+      <div className="flex flex-col h-screen bg-[#1e1e1e] text-white">
         <MenuBar 
-          onClose={handleClose} 
+          onClose={handleClose}
           onTerminalToggle={handleTerminalToggle}
-          onFullScreenToggle={onFullScreenToggle}
+          onFullScreenToggle={handleFullScreenToggle}
+          onMinimize={handleMinimize}
           isFullScreen={isFullScreen}
         />
         <div className="flex-1 flex items-center justify-center">
@@ -55,58 +106,84 @@ const VSCodeLayout = ({ onFullScreenToggle, onClose, isFullScreen }: VSCodeLayou
           </button>
         </div>
         <StatusBar />
+        <PenguinConfetti isActive={isExtensionInstalled('penguin-mode')} />
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[#1e1e1e] text-white">
-      {/* MenuBar mobile */}
-      <div className="lg:hidden">
-        <div className="h-9 bg-[#3c3c3c] flex items-center justify-between px-3">
-          <button className="text-white/80">
-            <VscMenu className="text-xl" />
-          </button>
-          <div className="text-white/80 text-sm">Portfolio - VS Code</div>
-        </div>
-      </div>
-
-      {/* MenuBar desktop */}
-      <div className="hidden lg:block">
-        <MenuBar 
-          onClose={handleClose} 
-          onTerminalToggle={handleTerminalToggle}
-          onFullScreenToggle={onFullScreenToggle}
-          isFullScreen={isFullScreen}
-        />
-      </div>
-
+    <div className="flex flex-col h-screen bg-[#1e1e1e] text-white">
+      <MenuBar 
+        onClose={handleClose}
+        onTerminalToggle={handleTerminalToggle}
+        onFullScreenToggle={handleFullScreenToggle}
+        onMinimize={handleMinimize}
+        isFullScreen={isFullScreen}
+      />
+      
       <div className="flex-1 flex overflow-hidden">
         <ActivityBar 
-          onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)} 
+          onSidebarToggle={handleSidebarToggle}
+          onExtensionsToggle={handleExtensionsToggle}
+          onSourceControlToggle={handleSourceControlToggle}
           isSidebarOpen={isSidebarOpen}
+          isExtensionsOpen={isExtensionsOpen}
+          isSourceControlOpen={isSourceControlOpen}
         />
-
+        
         {isSidebarOpen && (
           <Sidebar 
-            width={sidebarWidth} 
+            width={sidebarWidth}
             onWidthChange={setSidebarWidth}
           />
         )}
 
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className={`flex-1 overflow-auto ${isTerminalOpen ? 'h-[60vh]' : ''}`}>
+        {isExtensionsOpen && (
+          <ExtensionsSidebar 
+            width={extensionsWidth}
+            onWidthChange={setExtensionsWidth}
+          />
+        )}
+
+        {isSourceControlOpen && (
+          <SourceControlSidebar 
+            width={sourceControlWidth}
+            onWidthChange={setSourceControlWidth}
+          />
+        )}
+        
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="flex-none">
+            <TabsBar />
+          </div>
+          
+          <div className="flex-1 overflow-hidden">
             <Editor />
           </div>
+          
           {isTerminalOpen && (
             <Terminal onClose={() => setIsTerminalOpen(false)} />
           )}
         </div>
       </div>
 
+      <PenguinConfetti isActive={isExtensionInstalled('penguin-mode')} />
+      
+      {isExtensionInstalled('guitar-player') && (
+        <div className="flex-none">
+          <AudioPlayer />
+        </div>
+      )}
+      
       <StatusBar />
     </div>
   );
 };
+
+const VSCodeLayout = (props: VSCodeLayoutProps) => (
+  <ExtensionsProvider>
+    <VSCodeLayoutContent {...props} />
+  </ExtensionsProvider>
+);
 
 export default VSCodeLayout; 

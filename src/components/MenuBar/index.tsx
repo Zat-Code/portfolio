@@ -11,10 +11,11 @@ interface MenuBarProps {
   onClose: () => void;
   onTerminalToggle: () => void;
   onFullScreenToggle: () => void;
+  onMinimize: () => void;
   isFullScreen: boolean;
 }
 
-const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenToggle }: MenuBarProps) => {
+const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenToggle, onMinimize }: MenuBarProps) => {
   const { t } = useLanguage();
   const menuItems = [
     t('menu.file'),
@@ -102,7 +103,10 @@ const MenuBar = ({ isMobile = false, onClose, onTerminalToggle, onFullScreenTogg
 
       {/* Window Controls - toujours visibles */}
       <div className="flex ml-auto">
-        <button className="px-3 hover:bg-[#505050] h-8 flex items-center">
+        <button 
+          className="px-3 hover:bg-[#505050] h-8 flex items-center"
+          onClick={onMinimize}
+        >
           <VscChromeMinimize className="text-white/80" />
         </button>
         <button 
