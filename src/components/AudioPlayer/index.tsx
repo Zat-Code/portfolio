@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { VscPlay, VscDebugPause, VscChevronLeft, VscChevronRight, VscMute, VscUnmute } from 'react-icons/vsc';
+import { IoPlaySkipBack, IoPlaySkipForward, IoPlay, IoPause } from 'react-icons/io5';
+import { VscMute, VscUnmute } from 'react-icons/vsc';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface Song {
@@ -8,6 +9,7 @@ interface Song {
   artist: string;
   duration: string;
   url: string;
+  cover: string;
 }
 
 interface AudioPlayerProps {
@@ -26,39 +28,45 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
 
   const songs: Song[] = [
     {
-      id: '1',
+        id: '1',
+        title: 'The Last of Us',
+        artist: 'Zat',
+        duration: '2:30',
+        url: '/audio/the-last-of-us.mp3',
+        cover: '/audio/covers/the-last-of-us.svg'
+      },
+    {
+      id: '2',
       title: 'Feel Good Inc',
       artist: 'Zat',
       duration: '3:45',
-      url: '/audio/feel-good-inc.mp3'
+      url: '/audio/feel-good-inc.mp3',
+      cover: '/audio/covers/feel-good.jpg'
     },
-    {
-      id: '2',
-      title: 'The Last of Us',
-      artist: 'Zat',
-      duration: '2:30',
-      url: '/audio/the-last-of-us.mp3'
-    },
+
     {
       id: '3',
       title: 'Just the Two of Us',
       artist: 'Zat',
       duration: '4:15',
-      url: '/audio/just-the-two-of-us.mp3'
+      url: '/audio/just-the-two-of-us.mp3',
+      cover: '/audio/covers/just-the-two-of-us.jpg'
     },
     {
       id: '4',
       title: 'Song of Storms',
       artist: 'Zat',
       duration: '1:45',
-      url: '/audio/song-of-storms.mp3'
+      url: '/audio/song-of-storms.mp3',
+      cover: '/audio/covers/song-of-storms.jpg'
     },
     {
       id: '5',
       title: 'Outer Wilds',
       artist: 'Zat',
       duration: '2:15',
-      url: '/audio/outer-wilds.mp3'
+      url: '/audio/outer-wilds.mp3',
+      cover: '/audio/covers/outer-wilds.jpg'
     }
   ];
 
@@ -148,6 +156,11 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
 
       {/* Informations de la chanson */}
       <div className="flex items-center gap-2 sm:gap-4 w-[30%] sm:w-[25%]">
+        <img 
+          src={songs[currentSongIndex].cover} 
+          alt={songs[currentSongIndex].title}
+          className="w-12 h-12 rounded object-cover"
+        />
         <div className="flex flex-col min-w-0">
           <div className="text-white text-xs sm:text-sm font-medium truncate">
             {songs[currentSongIndex].title}
@@ -165,7 +178,7 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
             onClick={handlePrevious}
             className="text-white/60 hover:text-white"
           >
-            <VscChevronLeft className="text-xl sm:text-2xl" />
+            <IoPlaySkipBack className="text-xl sm:text-2xl" />
           </button>
           
           <button 
@@ -173,9 +186,9 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform"
           >
             {isPlaying ? (
-              <VscDebugPause className="text-black text-lg sm:text-xl" />
+              <IoPause className="text-black text-lg sm:text-xl" />
             ) : (
-              <VscPlay className="text-black text-lg sm:text-xl ml-1" />
+              <IoPlay className="text-black text-lg sm:text-xl ml-1" />
             )}
           </button>
           
@@ -183,7 +196,7 @@ const AudioPlayer = ({ onClose }: AudioPlayerProps) => {
             onClick={handleNext}
             className="text-white/60 hover:text-white"
           >
-            <VscChevronRight className="text-xl sm:text-2xl" />
+            <IoPlaySkipForward className="text-xl sm:text-2xl" />
           </button>
         </div>
 
