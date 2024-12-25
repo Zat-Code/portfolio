@@ -9,7 +9,6 @@ import ContactPreview from './previews/ContactPreview';
 import ExperiencePreview from './previews/ExperiencePreview';
 import PersonalProjectPreview from './previews/PersonalProjectPreview';
 import { VscPreview, VscCode } from 'react-icons/vsc';
-import TabsBar from '../TabsBar';
 
 const Editor = () => {
   const { activeFile } = useFiles();
@@ -40,7 +39,6 @@ const Editor = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <TabsBar />
       <div className="flex-1 flex flex-col min-h-0">
         {!activeFile && <HomePreview />}
         

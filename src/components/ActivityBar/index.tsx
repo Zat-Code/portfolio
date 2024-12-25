@@ -1,13 +1,30 @@
-import { VscFiles, VscSearch, VscSourceControl, VscExtensions, VscGear } from 'react-icons/vsc';
+import { useState } from 'react';
+import { VscFiles, VscSourceControl, VscExtensions, VscGear } from 'react-icons/vsc';
+import { GiCubes } from 'react-icons/gi';
+import { useExtensions } from '../../context/ExtensionsContext';
 import { useFiles } from '../../context/FileContext';
+import Tetris from '../Tetris';
 
 interface ActivityBarProps {
   onSidebarToggle: () => void;
+  onExtensionsToggle: () => void;
+  onSourceControlToggle: () => void;
   isSidebarOpen: boolean;
+  isExtensionsOpen: boolean;
+  isSourceControlOpen: boolean;
 }
 
-const ActivityBar = ({ onSidebarToggle, isSidebarOpen }: ActivityBarProps) => {
-  const { setActiveFile, activeFile } = useFiles();
+const ActivityBar = ({ 
+  onSidebarToggle, 
+  onExtensionsToggle,
+  onSourceControlToggle,
+  isSidebarOpen,
+  isExtensionsOpen,
+  isSourceControlOpen
+}: ActivityBarProps) => {
+  const { isExtensionInstalled } = useExtensions();
+  const { setActiveFile } = useFiles();
+  const [isTetrisOpen, setIsTetrisOpen] = useState(false);
 
   const handleSettingsClick = () => {
     setActiveFile({
@@ -15,96 +32,71 @@ const ActivityBar = ({ onSidebarToggle, isSidebarOpen }: ActivityBarProps) => {
       name: 'settings.json',
       language: 'json',
       content: {
-        fr: `{
-  "editor.language": "fr",
-  "editor.fontSize": 14,
-  "editor.fontFamily": "Consolas, 'Courier New', monospace",
-  "editor.tabSize": 2,
-  "editor.wordWrap": "on",
-  "editor.minimap.enabled": true,
-  "workbench.colorTheme": "Default Dark+",
-  "workbench.iconTheme": "vs-seti"
-}`,
-        en: `{
-  "editor.language": "en",
-  "editor.fontSize": 14,
-  "editor.fontFamily": "Consolas, 'Courier New', monospace",
-  "editor.tabSize": 2,
-  "editor.wordWrap": "on",
-  "editor.minimap.enabled": true,
-  "workbench.colorTheme": "Default Dark+",
-  "workbench.iconTheme": "vs-seti"
-}`
+        fr: '',
+        en: ''
       },
       isSettings: true
     });
   };
 
-  const isSettingsActive = activeFile?.id === 'settings';
-
   return (
-    <div className="w-12 flex-shrink-0 bg-[#333333] h-full flex flex-col">
-      <div className="flex flex-col">
-        <button 
-          className={`
-            w-12 h-12 flex items-center justify-center
-            relative -mt-[2px]
-            ${isSidebarOpen
-              ? 'text-white after:absolute after:left-0 after:top-0 after:h-full after:w-[2px] after:bg-[#d4d4d4]' 
-              : 'text-white/60 hover:text-white'
-            }
-            transition-all duration-200
-            hover:bg-[#2a2d2e]
-            overflow-hidden
-            group
-          `}
+    <>
+      <div className="w-12 bg-[#333333] flex flex-col items-center py-2">
+        <button
           onClick={onSidebarToggle}
+          className={`w-12 h-12 flex items-center justify-center hover:text-white ${
+            isSidebarOpen ? 'text-white border-l-2 border-white bg-[#2d2d2d]' : 'text-[#858585]'
+          }`}
+          title="Explorer"
         >
-          <VscFiles className="text-2xl relative z-10" />
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
-            <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-            <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
-          </div>
+          <VscFiles className="text-2xl" />
         </button>
-        
-        <button className="w-12 h-12 flex items-center justify-center text-white/60 hover:text-white hover:bg-[#2a2d2e]">
-          <VscSearch className="text-2xl" />
-        </button>
-        
-        <button className="w-12 h-12 flex items-center justify-center text-white/60 hover:text-white hover:bg-[#2a2d2e]">
+
+        <button
+          onClick={onSourceControlToggle}
+          className={`w-12 h-12 flex items-center justify-center hover:text-white ${
+            isSourceControlOpen ? 'text-white border-l-2 border-white bg-[#2d2d2d]' : 'text-[#858585]'
+          }`}
+          title="Source Control"
+        >
           <VscSourceControl className="text-2xl" />
         </button>
-        
-        <button className="w-12 h-12 flex items-center justify-center text-white/60 hover:text-white hover:bg-[#2a2d2e]">
+
+        <button
+          onClick={onExtensionsToggle}
+          className={`w-12 h-12 flex items-center justify-center hover:text-white ${
+            isExtensionsOpen ? 'text-white border-l-2 border-white bg-[#2d2d2d]' : 'text-[#858585]'
+          }`}
+          title="Extensions"
+        >
           <VscExtensions className="text-2xl" />
+        </button>
+
+        {isExtensionInstalled('tetris-break') && (
+          <button
+            onClick={() => setIsTetrisOpen(true)}
+            className="w-12 h-12 flex items-center justify-center text-[#858585] hover:text-white"
+            title="Tetris Break"
+          >
+            <GiCubes className="text-2xl text-[#ff0000]" />
+          </button>
+        )}
+
+        <div className="flex-1" />
+
+        <button
+          onClick={handleSettingsClick}
+          className="w-12 h-12 flex items-center justify-center hover:text-white"
+          title="Settings"
+        >
+          <VscGear className="text-2xl text-[#858585] hover:text-white" />
         </button>
       </div>
 
-      <div className="mt-auto">
-        <button 
-          className={`
-            w-12 h-12 flex items-center justify-center relative
-            ${isSettingsActive 
-              ? 'text-white after:absolute after:left-0 after:top-0 after:h-full after:w-[2px] after:bg-[#d4d4d4]' 
-              : 'text-white/60 hover:text-white'
-            }
-            transition-all duration-200
-            hover:bg-[#2a2d2e]
-            overflow-hidden
-            group
-          `}
-          onClick={handleSettingsClick}
-        >
-          <VscGear className="text-2xl relative z-10" />
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
-            <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-            <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
-          </div>
-        </button>
-      </div>
-    </div>
+      {isTetrisOpen && (
+        <Tetris onClose={() => setIsTetrisOpen(false)} />
+      )}
+    </>
   );
 };
 

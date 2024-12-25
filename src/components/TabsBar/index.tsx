@@ -24,7 +24,7 @@ const Tab = ({ file, isActive, onClose, onClick }: TabProps) => (
     <span className="truncate text-sm flex-1">{file.name}</span>
     <button 
       className={`
-        ml-2 p-0.5 rounded hover:bg-[#333] 
+        ml-2 p-1 rounded hover:bg-[#333] 
         ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
         transition-opacity
       `}
@@ -33,7 +33,7 @@ const Tab = ({ file, isActive, onClose, onClick }: TabProps) => (
         onClose();
       }}
     >
-      <VscClose className="text-xs" />
+      <VscClose className="text-base" />
     </button>
   </div>
 );
