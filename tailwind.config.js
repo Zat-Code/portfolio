@@ -8,7 +8,7 @@ export default {
     extend: {
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out forwards',
-        'shine-silver': 'shine 2s linear infinite',
+        'shine-silver': 'shine-silver 2s infinite',
         'bounce-1': 'bounce1 3s infinite',
         'bounce-2': 'bounce2 4s infinite',
         'bounce-3': 'bounce3 3.5s infinite',
@@ -98,6 +98,10 @@ export default {
             opacity: '1',
             transform: 'translateY(0)'
           }
+        },
+        'shine-silver': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
         }
       },
     },

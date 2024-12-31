@@ -64,12 +64,17 @@ const ActivityBar = ({
 
         <button
           onClick={onExtensionsToggle}
-          className={`w-12 h-12 flex items-center justify-center hover:text-white ${
+          className={`w-12 h-12 flex items-center justify-center hover:text-white relative overflow-hidden group  ${
             isExtensionsOpen ? 'text-white border-l-2 border-white bg-[#2d2d2d]' : 'text-[#858585]'
           }`}
           title="Extensions"
         >
-          <VscExtensions className="text-2xl" />
+            <div className="absolute inset-0">
+                <div className="absolute inset-0 animate-shine-silver bg-gradient-to-r from-transparent via-[#C0C0C0]/20 to-transparent" />
+                <div className="absolute inset-0 animate-shine-silver-delayed bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                <div className="absolute inset-0 animate-shine-silver-bright bg-gradient-to-r from-transparent via-[#E8E8E8]/10 to-transparent" />
+              </div>
+          <VscExtensions className="text-2xl relative z-10" />
         </button>
 
         {isExtensionInstalled('tetris-break') && (

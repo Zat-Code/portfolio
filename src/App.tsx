@@ -4,6 +4,7 @@ import { FileProvider } from './context/FileContext';
 import { ThemeProvider } from './context/ThemeContext';
 import VSCodeLayout from './layouts/VSCodeLayout';
 import './styles/editor.css'
+import { MatrixProvider } from './context/MatrixContext';
 
 const App = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -54,17 +55,19 @@ const App = () => {
   };
 
   return (
-    <LanguageProvider>
-      <FileProvider>
-        <ThemeProvider>
-          <VSCodeLayout 
-            onFullScreenToggle={handleFullScreenToggle}
-            onClose={handleClose}
-            isFullScreen={isFullScreen}
-          />
-        </ThemeProvider>
-      </FileProvider>
-    </LanguageProvider>
+    <MatrixProvider>
+      <LanguageProvider>
+        <FileProvider>
+          <ThemeProvider>
+            <VSCodeLayout 
+              onFullScreenToggle={handleFullScreenToggle}
+              onClose={handleClose}
+              isFullScreen={isFullScreen}
+            />
+          </ThemeProvider>
+        </FileProvider>
+      </LanguageProvider>
+    </MatrixProvider>
   );
 };
 
