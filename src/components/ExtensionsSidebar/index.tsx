@@ -3,6 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useExtensions } from '../../context/ExtensionsContext';
 import { VscSearch, VscRefresh, VscClearAll, VscCloudDownload, VscTrash } from 'react-icons/vsc';
 import { GiPenguin, GiGuitar, GiCubes } from 'react-icons/gi';
+import { RiCodeSSlashFill } from 'react-icons/ri';
 
 interface Extension {
   id: string;
@@ -26,11 +27,22 @@ const ExtensionsSidebar = ({ width = 300, onWidthChange }: ExtensionsSidebarProp
 
   const extensions: Extension[] = [
     {
+      id: 'matrix-mode',
+      name: 'Inside The Matrix',
+      description: language === 'fr' 
+        ? ' Plongez dans la Matrix ! Transformez votre éditeur en simulation cyberpunk avec un effet de pluie de code vert emblématique.'
+        : ' Dive into the Matrix! Transform your editor into a cyberpunk simulation with iconic green code rain effect.',
+      icon: <RiCodeSSlashFill className="text-[#00ff00]" />,
+      author: 'Zat',
+      downloads: '31',
+      rating: 5.0
+    },
+    {
       id: 'guitar-player',
       name: 'Guitar Player',
       description: language === 'fr' 
-        ? '🎸 Transformez votre IDE en scène de concert ! Écoutez mes riffs de guitare pendant que vous codez comme une rock star.'
-        : '🎸 Transform your IDE into a concert stage! Listen to my guitar riffs while coding like a rock star.',
+        ? ' Transformez votre IDE en scène de concert ! Écoutez mes riffs de guitare pendant que vous codez comme une rock star 🎸.'
+        : ' Transform your IDE into a concert stage! Listen to my guitar riffs while coding like a rock star 🎸.',
       icon: <GiGuitar className="text-[#1db954]" />,
       author: 'Zat',
       downloads: '13',
@@ -40,8 +52,8 @@ const ExtensionsSidebar = ({ width = 300, onWidthChange }: ExtensionsSidebarProp
       id: 'penguin-mode',
       name: 'Penguin Mode',
       description: language === 'fr' 
-        ? '🐧 Linux n\'est plus le seul à avoir des pingouins ! Une extension qui fait pleuvoir des pingouins à chaque clic. Parfait pour les développeurs qui trouvent que leur code manque de manchots volants.\n\n⚠️ PS : Aucun pingouin n\'a été maltraité pendant le développement de cette extension ! 🐧'
-        : '🐧 Linux is no longer the only one with penguins! An extension that makes it rain penguins with every click. Perfect for developers who think their code lacks flying penguins.\n\n⚠️ PS: No penguins were harmed in the making of this extension! 🐧',
+        ? ' Linux n\'est plus le seul à avoir des pingouins ! Une extension qui fait pleuvoir des pingouins à chaque clic. Parfait pour les développeurs qui trouvent que leur code manque de manchots volants.\n\n⚠️ PS : Aucun pingouin n\'a été maltraité pendant le développement de cette extension ! 🐧'
+        : ' Linux is no longer the only one with penguins! An extension that makes it rain penguins with every click. Perfect for developers who think their code lacks flying penguins.\n\n⚠️ PS: No penguins were harmed in the making of this extension! 🐧',
       icon: <GiPenguin className="text-[#000000]" />,
       author: 'Zat',
       downloads: '42',
@@ -51,8 +63,8 @@ const ExtensionsSidebar = ({ width = 300, onWidthChange }: ExtensionsSidebarProp
       id: 'tetris-break',
       name: 'Tetris Break',
       description: language === 'fr'
-        ? '🎮 Besoin d\'une pause code ? Faites une partie de Tetris ! Cette extension ajoute un bouton magique dans votre barre d\'activité qui ouvre un Tetris classique. Attention : peut créer une dépendance et des "erreurs de productivité" !'
-        : '🎮 Need a coding break? Play some Tetris! This extension adds a magical button to your activity bar that opens a classic Tetris game. Warning: may cause addiction and "productivity errors"!',
+        ? ' Besoin d\'une pause code ? Faites une partie de Tetris ! Cette extension ajoute un bouton magique dans votre barre d\'activité qui ouvre un Tetris classique. Attention : peut créer une dépendance et des "erreurs de productivité" !'
+        : ' Need a coding break? Play some Tetris! This extension adds a magical button to your activity bar that opens a classic Tetris game. Warning: may cause addiction and "productivity errors"!',
       icon: <GiCubes className="text-[#ff0000]" />,
       author: 'Zat',
       downloads: '27',
