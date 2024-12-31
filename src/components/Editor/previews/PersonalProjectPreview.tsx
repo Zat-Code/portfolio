@@ -97,12 +97,11 @@ const PersonalProjectPreview = () => {
       {isExtensionInstalled('matrix-mode') && (
         <>
           <MatrixRain className="z-0" />
-          <div className="absolute inset-0 bg-[#1e1e1e]/90 z-10" />
         </>
       )}
       <div className="h-full overflow-auto relative z-20 p-4">
         <div className="min-h-full py-4">
-          <div className="w-full max-w-4xl mx-auto px-4">
+          <div className="w-full max-w-4xl mx-auto p-6 bg-[#1e1e1e] rounded-lg">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl text-[#007acc] flex items-center gap-2 group cursor-default">

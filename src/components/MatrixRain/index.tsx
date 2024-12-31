@@ -38,7 +38,7 @@ const MatrixRain = ({ className }: MatrixRainProps) => {
       uniform vec2 iResolution;
       varying vec2 vUv;
 
-      #define RAIN_SPEED 1.
+      #define RAIN_SPEED 1.0
       #define DROP_SIZE 3.0
 
       float rand(vec2 co) {
@@ -84,31 +84,6 @@ const MatrixRain = ({ className }: MatrixRainProps) => {
           }
         }
         
-        position.x += 0.05;
-        scaledown = DROP_SIZE;
-        rx = fragCoord.x / (40.0 * scaledown);
-        mx = 40.0 * scaledown * fract(position.x * 30.0 * scaledown);
-        
-        if (mx <= 12.0 * scaledown) {
-          float x = floor(rx);
-          float r1x = floor(fragCoord.x / 12.0);
-          
-          float ry = position.y * 700.0 + rand(vec2(x, x * 3.0)) * 100000.0 + 
-                     globalTime * rand(vec2(r1x, 23.0)) * 120.0;
-          float my = mod(ry, 15.0);
-          
-          if (my <= 12.0 * scaledown) {
-            float y = floor(ry / 15.0);
-            float b = rchar(vec2(rx, floor(ry / 15.0)), vec2(mx, my) / 12.0, globalTime);
-            float col = max(mod(-y, 24.0) - 4.0, 0.0) / 20.0;
-            vec3 c = col < 0.8 ? 
-                     vec3(0.0, col / 0.8, 0.0) : 
-                     mix(vec3(0.0, 1.0, 0.0), vec3(1.0), (col - 0.8) / 0.2);
-            
-            result += vec4(c * b, 1.0);
-          }
-        }
-
         gl_FragColor = result;
       }
     `;
@@ -133,39 +108,42 @@ const MatrixRain = ({ className }: MatrixRainProps) => {
     scene.add(plane);
 
     // Animation
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       material.uniforms.iTime.value += 0.016;
       renderer.render(scene, camera);
     };
 
+    // Handle resize avec ResizeObserver
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        const height = entry.contentRect.height;
+        
+        renderer.setSize(width, height);
+        material.uniforms.iResolution.value.set(width, height);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
     animate();
 
-    // Handle resize
-    const handleResize = () => {
-      if (!containerRef.current) return;
-      const width = containerRef.current.clientWidth;
-      const height = containerRef.current.clientHeight;
-      
-      renderer.setSize(width, height);
-      material.uniforms.iResolution.value.set(width, height);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
     return () => {
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
+      cancelAnimationFrame(animationFrameId);
       renderer.dispose();
       scene.clear();
-      containerRef.current?.removeChild(renderer.domElement);
+      if (containerRef.current?.contains(renderer.domElement)) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
   return (
     <div 
       ref={containerRef} 
-      className={`absolute inset-0 pointer-events-none ${className}`}
+      className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
       style={{ 
         background: 'rgba(0,0,0,0.95)',
         mixBlendMode: 'screen'
