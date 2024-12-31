@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Prism from 'prismjs';
+import { useExtensions } from '../../context/ExtensionsContext';
+import MatrixRain from '../MatrixRain';
 
 // Theme
 import 'prismjs/themes/prism-tomorrow.css';
@@ -144,6 +146,7 @@ const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps)
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [showCursor, setShowCursor] = useState(false);
   const lines = code.split('\n');
+  const { isExtensionInstalled } = useExtensions();
 
   const getNormalizedLanguage = (lang: string) => {
     const languageMap: { [key: string]: string } = {
@@ -206,65 +209,73 @@ const CodeEditor = ({ code, language, onCursorPositionChange }: CodeEditorProps)
 
   return (
     <div className="relative flex h-full">
-      {/* Numéros de ligne */}
-      <div className="select-none pr-4 text-right text-[#858585] min-w-[3rem]">
-        {lines.map((_, index) => (
-          <div 
-            key={index + 1}
-            className={`h-6 leading-6 ${
-              activeLine === index + 1 ? 'text-white' : ''
-            }`}
-          >
-            {index + 1}
-          </div>
-        ))}
-      </div>
+      {isExtensionInstalled('matrix-mode') && (
+        <>
+          <MatrixRain className="z-0" />
+          <div className="absolute inset-0 bg-[#1e1e1e]/90 z-10" />
+        </>
+      )}
+      <div className="flex-1 flex relative z-20">
+        {/* Numéros de ligne */}
+        <div className="select-none pr-4 text-right text-[#858585] min-w-[3rem]">
+          {lines.map((_, index) => (
+            <div 
+              key={index + 1}
+              className={`h-6 leading-6 ${
+                activeLine === index + 1 ? 'text-white' : ''
+              }`}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
 
-      {/* Code avec highlight */}
-      <div className="relative flex-1 overflow-auto">
-        {/* Ligne active highlight */}
-        <div 
-          className="absolute w-full h-6 bg-[#282828] -z-10"
-          style={{ top: `${(activeLine - 1) * 24}px` }}
-        />
-        
-        {/* Curseur */}
-        {showCursor && (
-          <div
-            id="editor-cursor"
-            className="absolute w-[1.5px] h-[18px] bg-white/80 transition-opacity duration-100"
-            style={{
-              left: `${cursorPosition.x}px`,
-              top: `${cursorPosition.y + 3}px`
-            }}
+        {/* Code avec highlight */}
+        <div className="relative flex-1 overflow-auto">
+          {/* Ligne active highlight */}
+          <div 
+            className="absolute w-full h-6 bg-[#282828] -z-10"
+            style={{ top: `${(activeLine - 1) * 24}px` }}
           />
-        )}
-        
-        <pre className="h-full">
-          <code
-            ref={codeRef}
-            className={`language-${getNormalizedLanguage(language)} block leading-6`}
-            onClick={handleClick}
-            style={{
-              padding: '0px',
-              fontFamily: 'Consolas, Monaco, monospace',
-              fontSize: '14px',
-              lineHeight: '24px',
-              tabSize: 2
-            }}
-            onMouseMove={(e) => {
-              const lineHeight = 24;
-              const rect = e.currentTarget.getBoundingClientRect();
-              const relativeY = e.clientY - rect.top;
-              const newActiveLine = Math.floor(relativeY / lineHeight) + 1;
-              if (newActiveLine <= lines.length && newActiveLine > 0) {
-                setActiveLine(newActiveLine);
-              }
-            }}
-          >
-            {code}
-          </code>
-        </pre>
+          
+          {/* Curseur */}
+          {showCursor && (
+            <div
+              id="editor-cursor"
+              className="absolute w-[1.5px] h-[18px] bg-white/80 transition-opacity duration-100"
+              style={{
+                left: `${cursorPosition.x}px`,
+                top: `${cursorPosition.y + 3}px`
+              }}
+            />
+          )}
+          
+          <pre className="h-full">
+            <code
+              ref={codeRef}
+              className={`language-${getNormalizedLanguage(language)} block leading-6`}
+              onClick={handleClick}
+              style={{
+                padding: '0px',
+                fontFamily: 'Consolas, Monaco, monospace',
+                fontSize: '14px',
+                lineHeight: '24px',
+                tabSize: 2
+              }}
+              onMouseMove={(e) => {
+                const lineHeight = 24;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const relativeY = e.clientY - rect.top;
+                const newActiveLine = Math.floor(relativeY / lineHeight) + 1;
+                if (newActiveLine <= lines.length && newActiveLine > 0) {
+                  setActiveLine(newActiveLine);
+                }
+              }}
+            >
+              {code}
+            </code>
+          </pre>
+        </div>
       </div>
     </div>
   );
